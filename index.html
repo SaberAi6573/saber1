@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Gamer Profile</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: url('https://cdn.discordapp.com/attachments/1381495592110526465/1381500205693800580/b4995090b30f9dec8aefa98003aca288.gif?ex=68563e54&is=6854ecd4&hm=0f248e814c6a013620882f25641351ad7f06d0ba497dc2816101647d8c183852&.gif') no-repeat center center/cover;
+    overflow: hidden;
+    font-family: 'Orbitron', sans-serif;
+    color: #0ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: none;
+    background-color: #000;
+  }
+
+  .custom-cursor {
+    width: 40px;
+    height: 40px;
+    background: url('https://media.discordapp.net/attachments/1381495592110526465/1385630860342202389/image.png?ex=6856c4cc&is=6855734c&hm=427272956e1296960888ac40022d8f442cd46f7648a22020b5c440333a378d8f&=&format=webp&quality=lossless&width=640&height=640png') no-repeat center center/contain;
+    position: absolute;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    filter: drop-shadow(0 0 5px #0ff);
+  }
+
+  .start-screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 10000;
+    animation: fadeIn 2s ease;
+  }
+
+  .start-text {
+    font-size: 2rem;
+    color: #0ff;
+    text-shadow: 0 0 20px #0ff;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .card {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #0ff;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 0 30px #0ff;
+    text-align: center;
+    animation: float 3s ease-in-out infinite;
+    z-index: 2;
+    display: none;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0); }
+  }
+
+  .card h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px #0ff;
+  }
+
+  .social-link {
+    display: block;
+    margin: 10px 0;
+    padding: 12px 20px;
+    background: transparent;
+    border: 2px solid #0ff;
+    border-radius: 10px;
+    color: #0ff;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.3s;
+    box-shadow: 0 0 15px #0ff;
+  }
+
+  .social-link:hover, .social-link:focus {
+    background: #0ff;
+    color: #000;
+    transform: scale(1.1);
+    outline: none;
+  }
+
+  .fps {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.9);
+    color: #0ff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    z-index: 1000;
+    box-shadow: 0 0 10px #0ff;
+  }
+</style>
+</head>
+<body>
+
+<audio autoplay loop>
+  <source src="your-genshin-style-music.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<div class="custom-cursor" id="cursor"></div>
+<div class="fps" id="fpsCounter">FPS: --</div>
+
+<div class="start-screen" id="startScreen">
+  <div class="start-text">Press ENTER to Start</div>
+</div>
+
+<div class="card" id="mainCard" tabindex="0">
+  <h1>Welcome to My Domain</h1>
+  <a href="https://discord.com/yourdiscord" target="_blank" class="social-link" tabindex="1">Join my Discord</a>
+  <a href="https://instagram.com/yourinstagram" target="_blank" class="social-link" tabindex="2">Follow me on Instagram</a>
+</div>
+
+<script>
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.pageX + 'px';
+  cursor.style.top = e.pageY + 'px';
+});
+
+// Sparkle click effect
+document.addEventListener('click', e => {
+  const sparkle = document.createElement('div');
+  sparkle.style.position = 'absolute';
+  sparkle.style.width = '15px';
+  sparkle.style.height = '15px';
+  sparkle.style.borderRadius = '50%';
+  sparkle.style.background = '#0ff';
+  sparkle.style.left = e.pageX + 'px';
+  sparkle.style.top = e.pageY + 'px';
+  sparkle.style.opacity = 1;
+  sparkle.style.transition = 'all 0.6s ease';
+  document.body.appendChild(sparkle);
+  setTimeout(() => {
+    sparkle.style.transform = 'scale(3)';
+    sparkle.style.opacity = 0;
+  }, 10);
+  setTimeout(() => {
+    document.body.removeChild(sparkle);
+  }, 600);
+});
+
+// FPS Counter
+let lastFrame = performance.now();
+let fpsCounter = document.getElementById('fpsCounter');
+function updateFPS() {
+  const now = performance.now();
+  const fps = Math.round(1000 / (now - lastFrame));
+  fpsCounter.textContent = `FPS: ${fps}`;
+  lastFrame = now;
+  requestAnimationFrame(updateFPS);
+}
+updateFPS();
+
+// Press Start text hide on ENTER
+window.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter') {
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('mainCard').style.display = 'block';
+    document.getElementById('mainCard').focus();
+  }
+});
+</script>
+
+</body>
+</html>
