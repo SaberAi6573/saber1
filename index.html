@@ -2,39 +2,54 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>My Gamer Profile</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+  :root {
+    --primary-color: #f00;
+    --secondary-color: #0ff;
+    --accent-color: #f0f;
+    --text-glow: 0 0 20px #f00;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
 
   body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    background: url('https://cdn.discordapp.com/attachments/1381495592110526465/1381500205693800580/b4995090b30f9dec8aefa98003aca288.gif?ex=68563e54&is=6854ecd4&hm=0f248e814c6a013620882f25641351ad7f06d0ba497dc2816101647d8c183852&.gif') no-repeat center center/cover;
+    width: 100vw;
+    background: url('https://tenor.com/view/utml-ut-ml-gif-21032611.gif') no-repeat center center/cover;
     overflow: hidden;
     font-family: 'Orbitron', sans-serif;
-    color: #0ff;
+    color: var(--primary-color);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: none;
     background-color: #000;
+    touch-action: manipulation;
   }
 
   .custom-cursor {
     width: 40px;
     height: 40px;
-    background: url('https://media.discordapp.net/attachments/1381495592110526465/1385630860342202389/image.png?ex=6856c4cc&is=6855734c&hm=427272956e1296960888ac40022d8f442cd46f7648a22020b5c440333a378d8f&=&format=webp&quality=lossless&width=640&height=640png') no-repeat center center/contain;
+    background: url('https://cdn.discordapp.com/attachments/1381495592110526465/1386656181610876938/genshin_cursor.png?ex=685a7fb4&is=68592e34&hm=d29333c88f304036a7839e426e926e88286351f17b50ce0cfb98533371f10a19&') no-repeat center center/contain;
     position: absolute;
     pointer-events: none;
     z-index: 9999;
     transition: transform 0.1s ease;
-    filter: drop-shadow(0 0 5px #0ff);
+    filter: drop-shadow(0 0 5px var(--primary-color));
+    display: block;
   }
 
   .start-screen {
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.95);
@@ -43,14 +58,62 @@
     align-items: center;
     flex-direction: column;
     z-index: 10000;
-    animation: fadeIn 2s ease;
+    animation: fadeIn 0.25s ease;
+    top: 0;
+    left: 0;
   }
 
   .start-text {
-    font-size: 2rem;
-    color: #0ff;
-    text-shadow: 0 0 20px #0ff;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    color: var(--primary-color);
+    text-shadow: var(--text-glow);
     animation: float 3s ease-in-out infinite;
+    text-align: center;
+    position: relative;
+    padding: 0 20px;
+  }
+
+  /* Glitch effect styles */
+  .glitch {
+    position: relative;
+  }
+  .glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+  }
+  .glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 var(--secondary-color);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+  }
+  .glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 var(--accent-color);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim-2 2s infinite linear alternate-reverse;
+  }
+
+  @keyframes glitch-anim-1 {
+    0% { clip: rect(32px, 9999px, 78px, 0); }
+    20% { clip: rect(8px, 9999px, 32px, 0); }
+    40% { clip: rect(64px, 9999px, 99px, 0); }
+    60% { clip: rect(12px, 9999px, 45px, 0); }
+    80% { clip: rect(88px, 9999px, 72px, 0); }
+    100% { clip: rect(1px, 9999px, 99px, 0); }
+  }
+  @keyframes glitch-anim-2 {
+    0% { clip: rect(90px, 9999px, 98px, 0); }
+    20% { clip: rect(3px, 9999px, 8px, 0); }
+    40% { clip: rect(67px, 9999px, 82px, 0); }
+    60% { clip: rect(23px, 9999px, 89px, 0); }
+    80% { clip: rect(12px, 9999px, 54px, 0); }
+    100% { clip: rect(78px, 9999px, 1px, 0); }
   }
 
   @keyframes fadeIn {
@@ -60,14 +123,52 @@
 
   .card {
     background: rgba(0, 0, 0, 0.8);
-    border: 2px solid #0ff;
+    border: 2px solid var(--primary-color);
     border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 0 30px #0ff;
+    padding: clamp(20px, 5vw, 35px);
+    box-shadow: 0 0 30px var(--primary-color);
     text-align: center;
     animation: float 3s ease-in-out infinite;
     z-index: 2;
     display: none;
+    width: 95%;
+    max-width: 550px;
+    position: relative;
+    margin: 20px;
+  }
+
+  /* Glitch effect for card */
+  .card-glitch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--primary-color);
+    border-radius: 15px;
+    box-shadow: 0 0 30px var(--primary-color);
+    z-index: -1;
+    opacity: 0;
+  }
+  .card-glitch:nth-child(1) {
+    transform: translate(-5px, -5px);
+    background: rgba(0, 255, 255, 0.1);
+    animation: glitch-card 0.5s infinite;
+  }
+  .card-glitch:nth-child(2) {
+    transform: translate(5px, 5px);
+    background: rgba(255, 0, 255, 0.1);
+    animation: glitch-card 0.5s infinite reverse;
+  }
+
+  @keyframes glitch-card {
+    0% { transform: translate(0); opacity: 0.5; }
+    20% { transform: translate(-3px, 3px); }
+    40% { transform: translate(-5px, -5px); }
+    60% { transform: translate(5px, 5px); }
+    80% { transform: translate(3px, -3px); }
+    100% { transform: translate(0); opacity: 0; }
   }
 
   @keyframes float {
@@ -77,42 +178,89 @@
   }
 
   .card h1 {
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 5vw, 2rem);
     margin-bottom: 20px;
-    text-shadow: 0 0 20px #0ff;
+    text-shadow: var(--text-glow);
   }
 
-  .social-link {
-    display: block;
-    margin: 10px 0;
-    padding: 12px 20px;
-    background: transparent;
-    border: 2px solid #0ff;
-    border-radius: 10px;
-    color: #0ff;
-    text-decoration: none;
-    transition: background 0.3s, transform 0.3s;
-    box-shadow: 0 0 15px #0ff;
+  .photo {
+    width: clamp(100px, 30vw, 160px);
+    height: clamp(100px, 30vw, 160px);
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    background: url('https://cdn.discordapp.com/attachments/1381495592110526465/1385852513781153863/e7b80a0dfdab85526e4c45919381da6d.jpg?ex=68598d7b&is=68583bfb&hm=3c48d0b55979808379e853b3e1b585b5b406d08679ea4373cb33db51b68147d3&') no-repeat center center/cover;
+    box-shadow: 0 0 15px var(--primary-color);
+    border: 2px solid var(--primary-color);
   }
 
-  .social-link:hover, .social-link:focus {
-    background: #0ff;
-    color: #000;
-    transform: scale(1.1);
-    outline: none;
+  .social-icons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: clamp(20px, 5vw, 40px);
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    flex-wrap: wrap;
+  }
+
+  .social-icons a {
+    cursor: none;
+    display: inline-block;
+  }
+
+  .social-icons a img {
+    width: clamp(35px, 8vw, 50px);
+    height: clamp(35px, 8vw, 50px);
+    filter: drop-shadow(0 0 10px var(--primary-color));
+    transition: transform 0.3s;
+  }
+
+  .social-icons a img:hover {
+    transform: scale(1.2);
+    animation: blossom 1s ease;
+  }
+
+  @keyframes blossom {
+    0% { transform: scale(1.2) rotate(0deg); }
+    50% { transform: scale(1.4) rotate(10deg); }
+    100% { transform: scale(1.2) rotate(0deg); }
   }
 
   .fps {
-    position: absolute;
+    position: fixed;
     top: 10px;
     left: 10px;
     background: rgba(0, 0, 0, 0.9);
-    color: #0ff;
+    color: var(--primary-color);
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 0.8rem;
     z-index: 1000;
-    box-shadow: 0 0 10px #0ff;
+    box-shadow: 0 0 10px var(--primary-color);
+  }
+
+  /* Mobile-specific adjustments */
+  @media (hover: none) {
+    .custom-cursor {
+      display: none;
+    }
+    body {
+      cursor: default;
+    }
+    .social-icons a img {
+      transform: scale(1.1); /* Slightly larger for touch */
+    }
+  }
+
+  /* Orientation-specific adjustments */
+  @media (orientation: portrait) {
+    .card {
+      max-width: 90%;
+    }
+    .social-icons {
+      gap: 25px;
+    }
   }
 </style>
 </head>
@@ -127,64 +275,136 @@
 <div class="fps" id="fpsCounter">FPS: --</div>
 
 <div class="start-screen" id="startScreen">
-  <div class="start-text">Press ENTER to Start</div>
+  <div class="start-text glitch" data-text="Press ENTER or Tap to Start">Press ENTER or Tap to Start</div>
 </div>
 
 <div class="card" id="mainCard" tabindex="0">
+  <div class="card-glitch"></div>
+  <div class="card-glitch"></div>
   <h1>Welcome to My Domain</h1>
-  <a href="https://discord.com/yourdiscord" target="_blank" class="social-link" tabindex="1">Join my Discord</a>
-  <a href="https://instagram.com/yourinstagram" target="_blank" class="social-link" tabindex="2">Follow me on Instagram</a>
+  <div class="photo"></div>
+  <div class="social-icons">
+    <a href="https://discord.com/channels/1161803566265143306" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord"></a>
+    <a href="https://www.instagram.com/saber.ai.6573?utm_source=ig_web_button_share_sheet&igsh=YzRlc3ZvaHNrcGVx" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram"></a>
+    <a href="https://fmhy.net/beginners-guide" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+    <a href="https://x.com/" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670151.png" alt="X"></a>
+  </div>
 </div>
 
 <script>
+// Detect touch devices
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+// Hide cursor on touch devices
+if (isTouchDevice) {
+  document.getElementById('cursor').style.display = 'none';
+  document.body.style.cursor = 'default';
+}
+
 const cursor = document.getElementById('cursor');
 document.addEventListener('mousemove', e => {
-  cursor.style.left = e.pageX + 'px';
-  cursor.style.top = e.pageY + 'px';
+  if (!isTouchDevice) {
+    cursor.style.left = e.pageX + 'px';
+    cursor.style.top = e.pageY + 'px';
+  }
 });
 
-// Sparkle click effect
-document.addEventListener('click', e => {
-  const sparkle = document.createElement('div');
-  sparkle.style.position = 'absolute';
-  sparkle.style.width = '15px';
-  sparkle.style.height = '15px';
-  sparkle.style.borderRadius = '50%';
-  sparkle.style.background = '#0ff';
-  sparkle.style.left = e.pageX + 'px';
-  sparkle.style.top = e.pageY + 'px';
-  sparkle.style.opacity = 1;
-  sparkle.style.transition = 'all 0.6s ease';
-  document.body.appendChild(sparkle);
+function createFlower(x, y) {
+  const flower = document.createElement('div');
+  flower.style.position = 'absolute';
+  flower.style.left = `${x - 10}px`;
+  flower.style.top = `${y - 10}px`;
+  flower.style.width = '20px';
+  flower.style.height = '20px';
+  flower.style.borderRadius = '50%';
+  flower.style.background = 'radial-gradient(circle, #f00 0%, #4d0000 100%)';
+  flower.style.pointerEvents = 'none';
+  flower.style.opacity = 1;
+  flower.style.transition = 'all 0.8s ease-out';
+  document.body.appendChild(flower);
   setTimeout(() => {
-    sparkle.style.transform = 'scale(3)';
-    sparkle.style.opacity = 0;
+    flower.style.transform = 'scale(3)';
+    flower.style.opacity = 0;
   }, 10);
-  setTimeout(() => {
-    document.body.removeChild(sparkle);
-  }, 600);
-});
+  setTimeout(() => document.body.removeChild(flower), 800);
+}
 
-// FPS Counter
+// Click/touch handler
+function handleInteraction(e) {
+  const x = e.pageX || (e.touches && e.touches[0].pageX) || 0;
+  const y = e.pageY || (e.touches && e.touches[0].pageY) || 0;
+  createFlower(x, y);
+}
+
+document.addEventListener('click', handleInteraction);
+document.addEventListener('touchstart', handleInteraction);
+
+// FPS counter
 let lastFrame = performance.now();
+let frameCount = 0;
 let fpsCounter = document.getElementById('fpsCounter');
 function updateFPS() {
   const now = performance.now();
-  const fps = Math.round(1000 / (now - lastFrame));
-  fpsCounter.textContent = `FPS: ${fps}`;
-  lastFrame = now;
+  frameCount++;
+  
+  if (now - lastFrame >= 1000) {
+    fpsCounter.textContent = `FPS: ${frameCount}`;
+    frameCount = 0;
+    lastFrame = now;
+  }
+  
   requestAnimationFrame(updateFPS);
 }
 updateFPS();
 
-// Press Start text hide on ENTER
-window.addEventListener('keydown', (e) => {
-  if(e.key === 'Enter') {
-    document.getElementById('startScreen').style.display = 'none';
-    document.getElementById('mainCard').style.display = 'block';
-    document.getElementById('mainCard').focus();
-  }
+// Start experience function
+function startExperience() {
+  // Add glitch effect to start screen
+  const startScreen = document.getElementById('startScreen');
+  startScreen.style.animation = 'none';
+  void startScreen.offsetWidth; // Trigger reflow
+  startScreen.style.animation = 'fadeIn 0.25s ease';
+  
+  setTimeout(() => {
+    startScreen.style.display = 'none';
+    const mainCard = document.getElementById('mainCard');
+    mainCard.style.display = 'block';
+    
+    // Add initial glitch effect to card
+    const cardGlitches = document.querySelectorAll('.card-glitch');
+    cardGlitches.forEach(glitch => {
+      glitch.style.opacity = '0.7';
+      setTimeout(() => {
+        glitch.style.opacity = '0';
+      }, 500);
+    });
+    
+    mainCard.focus();
+  }, 250);
+}
+
+// Start event listeners
+window.addEventListener('keydown', e => {
+  if(e.key === 'Enter') startExperience();
 });
+
+// Use click for mouse and touch for touch devices
+window.addEventListener(isTouchDevice ? 'touchstart' : 'click', startExperience, { once: true });
+
+// Prevent zooming on mobile
+document.addEventListener('gesturestart', function(e) {
+  e.preventDefault();
+});
+
+// Prevent double-tap zoom
+let lastTouchEnd = 0;
+document.addEventListener('touchend', function(event) {
+  const now = (new Date()).getTime();
+  if (now - lastTouchEnd <= 300) {
+    event.preventDefault();
+  }
+  lastTouchEnd = now;
+}, false);
 </script>
 
 </body>
