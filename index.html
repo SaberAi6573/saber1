@@ -3,15 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TESTING WEB</title>
+<title>CYBERSPACE TERMINAL</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500&display=swap');
 
   :root {
-    --primary-color: #f00;
-    --secondary-color: #0ff;
-    --accent-color: #f0f;
-    --text-glow: 0 0 20px #f00;
+    --primary-color: #ff003c;
+    --secondary-color: #00f0ff;
+    --accent-color: #ff00f0;
+    --text-glow: 0 0 10px #ff003c, 0 0 20px #ff003c;
+    --neon-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+    --scanline-color: rgba(0, 255, 255, 0.05);
+    --terminal-bg: rgba(0, 0, 0, 0.85);
+    --grid-line: 1px solid rgba(0, 240, 255, 0.1);
   }
 
   * {
@@ -24,7 +28,9 @@
     padding: 0;
     height: 100vh;
     width: 100vw;
-    background: url('https://tenor.com/view/k%C4%B1rm%C4%B1z%C4%B1-ay-gif-3409836757089361376.gif') no-repeat center center/cover;
+    background: 
+      radial-gradient(circle at center, rgba(255,0,60,0.1) 0%, transparent 70%),
+      linear-gradient(to bottom, #000000 0%, #0a0a20 100%);
     overflow: hidden;
     font-family: 'Orbitron', sans-serif;
     color: var(--primary-color);
@@ -32,45 +38,128 @@
     justify-content: center;
     align-items: center;
     cursor: none;
-    background-color: #000;
     touch-action: manipulation;
+    position: relative;
   }
 
+  /* Cyberpunk grid background */
+  .grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+    opacity: 0.3;
+  }
+
+  /* CRT scanline effect */
+  .scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      var(--scanline-color) 1px,
+      transparent 2px
+    );
+    background-size: 100% 4px;
+    z-index: 0;
+    pointer-events: none;
+    animation: scanline 8s linear infinite;
+  }
+
+  @keyframes scanline {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+  }
+
+  /* Custom cursor with cyberpunk style */
   .custom-cursor {
-    width: 40px;
-    height: 40px;
-    background: url('https://cdn.discordapp.com/attachments/1381495592110526465/1386656181610876938/genshin_cursor.png?ex=6867aeb4&is=68665d34&hm=2e8acc1f450c48e8fe409859c2d5d1d0be5805ba46156c7dda7082f47c357ec7&.png') no-repeat center center/contain;
+    width: 32px;
+    height: 32px;
+    background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
     position: absolute;
     pointer-events: none;
     z-index: 9999;
-    transition: transform 0.1s ease;
+    transition: 
+      transform 0.1s ease,
+      width 0.2s ease,
+      height 0.2s ease;
     filter: drop-shadow(0 0 5px var(--primary-color));
     display: block;
+    mix-blend-mode: screen;
   }
 
+  .custom-cursor::before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--secondary-color);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.5; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  }
+
+  /* Start screen with glitch effect */
   .start-screen {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0, 0.98);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     z-index: 10000;
-    animation: fadeIn 0.25s ease;
+    animation: fadeIn 0.5s ease;
     top: 0;
     left: 0;
   }
 
   .start-text {
-    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
     color: var(--primary-color);
     text-shadow: var(--text-glow);
     animation: float 3s ease-in-out infinite;
     text-align: center;
     position: relative;
     padding: 0 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+
+  .start-subtext {
+    font-size: clamp(0.8rem, 3vw, 1.2rem);
+    color: var(--secondary-color);
+    margin-top: 20px;
+    text-align: center;
+    opacity: 0.8;
+    animation: fadeInOut 4s infinite;
+  }
+
+  @keyframes fadeInOut {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
   }
 
   /* Glitch effect styles */
@@ -84,7 +173,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0, 0.98);
   }
   .glitch::before {
     left: 2px;
@@ -121,50 +210,105 @@
     to { opacity: 1; }
   }
 
+  /* Main card with terminal style */
   .card {
-    background: rgba(0, 0, 0, 0.8);
-    border: 2px solid var(--primary-color);
-    border-radius: 15px;
+    background: var(--terminal-bg);
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
     padding: clamp(20px, 5vw, 35px);
     box-shadow: 0 0 30px var(--primary-color);
     text-align: center;
-    animation: float 3s ease-in-out infinite;
     z-index: 2;
     display: none;
     width: 95%;
-    max-width: 550px;
+    max-width: 600px;
     position: relative;
     margin: 20px;
+    backdrop-filter: blur(5px);
+    overflow: hidden;
   }
 
-  @keyframes float {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-    100% { transform: translateY(0); }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to bottom right,
+      transparent 45%,
+      var(--primary-color) 50%,
+      transparent 55%
+    );
+    opacity: 0.1;
+    animation: shine 6s linear infinite;
+  }
+
+  @keyframes shine {
+    0% { transform: rotate(0deg) translate(-25%, -25%); }
+    100% { transform: rotate(360deg) translate(-25%, -25%); }
   }
 
   .card h1 {
-    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
     margin-bottom: 20px;
     text-shadow: var(--text-glow);
+    position: relative;
+    letter-spacing: 1px;
+  }
+
+  .card h1::after {
+    content: '';
+    display: block;
+    width: 50%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+    margin: 10px auto;
+    opacity: 0.7;
   }
 
   .photo {
-    width: clamp(100px, 30vw, 160px);
-    height: clamp(100px, 30vw, 160px);
+    width: clamp(120px, 30vw, 180px);
+    height: clamp(120px, 30vw, 180px);
     border-radius: 50%;
-    margin: 0 auto 15px;
-    background: url('https://cdn.discordapp.com/attachments/1381495592110526465/1385852513781153863/e7b80a0dfdab85526e4c45919381da6d.jpg?ex=6867653b&is=686613bb&hm=d90b1c1dcdb422078177fc0ef164a0614aefb79d8aeb8337e48828b1ec970c34&.png') no-repeat center center/cover;
-    box-shadow: 0 0 15px var(--primary-color);
+    margin: 0 auto 20px;
+    background: url('https://i.imgur.com/cyberpunk-avatar.jpg') no-repeat center center/cover;
+    box-shadow: 0 0 20px var(--primary-color);
     border: 2px solid var(--primary-color);
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+
+  .photo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--accent-color);
+  }
+
+  .photo::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    border: 2px solid var(--secondary-color);
+    animation: rotate 10s linear infinite;
+    opacity: 0.7;
+  }
+
+  @keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
   .social-icons {
-    margin-top: 20px;
+    margin-top: 25px;
     display: flex;
     justify-content: center;
-    gap: clamp(20px, 5vw, 40px);
-    width: 85%;
+    gap: clamp(15px, 5vw, 30px);
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     flex-wrap: wrap;
@@ -173,65 +317,84 @@
   .social-icons a {
     cursor: none;
     display: inline-block;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .social-icons a::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  .social-icons a:hover::before {
+    opacity: 1;
+    transform: scale(1.2);
   }
 
   .social-icons a img {
-    width: clamp(35px, 8vw, 50px);
-    height: clamp(35px, 8vw, 50px);
+    width: clamp(40px, 8vw, 55px);
+    height: clamp(40px, 8vw, 55px);
     filter: drop-shadow(0 0 10px var(--primary-color));
-    transition: transform 0.3s;
+    transition: all 0.3s ease;
   }
 
-  .social-icons a img:hover {
+  .social-icons a:hover img {
     transform: scale(1.2);
-    animation: blossom 1s ease;
+    filter: drop-shadow(0 0 15px var(--accent-color));
   }
 
-  @keyframes blossom {
-    0% { transform: scale(1.2) rotate(0deg); }
-    50% { transform: scale(1.4) rotate(10deg); }
-    100% { transform: scale(1.2) rotate(0deg); }
-  }
-
+  /* FPS counter with terminal style */
   .fps {
     position: fixed;
     top: 10px;
     left: 10px;
-    background: rgba(0, 0, 0, 0.9);
-    color: var(--primary-color);
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--secondary-color);
     padding: 5px 10px;
-    border-radius: 5px;
+    border-radius: 3px;
     font-size: 0.8rem;
     z-index: 1000;
     box-shadow: 0 0 10px var(--primary-color);
+    font-family: 'Rajdhani', sans-serif;
+    border: 1px solid var(--secondary-color);
   }
 
-  /* Music player styles */
+  /* Music player with cyberpunk style */
   .music-player {
     position: fixed;
     bottom: 20px;
     left: 20px;
-    background: rgba(0, 0, 0, 0.8);
-    border: 2px solid var(--primary-color);
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
     padding: 10px 15px;
     box-shadow: 0 0 15px var(--primary-color);
     z-index: 1000;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
+    font-family: 'Rajdhani', sans-serif;
   }
 
   .music-player:hover {
-    box-shadow: 0 0 25px var(--primary-color);
+    box-shadow: 0 0 25px var(--accent-color);
+    border-color: var(--secondary-color);
   }
 
   .music-controls {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
 
   .music-btn {
@@ -243,21 +406,33 @@
     text-shadow: var(--text-glow);
     transition: all 0.2s ease;
     padding: 5px;
-    border-radius: 50%;
+    border-radius: 3px;
     width: 30px;
     height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+  }
+
+  .music-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--secondary-color);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
   }
 
   .music-btn:hover {
-    background: rgba(255, 0, 0, 0.2);
-    transform: scale(1.1);
+    color: var(--secondary-color);
   }
 
-  .music-btn:active {
-    transform: scale(0.95);
+  .music-btn:hover::after {
+    transform: scaleX(1);
   }
 
   .volume-control {
@@ -269,8 +444,8 @@
   .volume-slider {
     width: 80px;
     -webkit-appearance: none;
-    height: 4px;
-    background: rgba(255, 0, 0, 0.3);
+    height: 3px;
+    background: rgba(255, 0, 60, 0.3);
     border-radius: 2px;
     outline: none;
     cursor: none;
@@ -284,6 +459,12 @@
     border-radius: 50%;
     cursor: none;
     box-shadow: 0 0 5px var(--primary-color);
+    transition: all 0.2s ease;
+  }
+
+  .volume-slider::-webkit-slider-thumb:hover {
+    background: var(--secondary-color);
+    transform: scale(1.2);
   }
 
   .volume-slider::-moz-range-thumb {
@@ -292,12 +473,108 @@
 
   .music-title {
     font-size: 12px;
-    color: var(--primary-color);
-    text-shadow: var(--text-glow);
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 120px;
+    max-width: 150px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Floating particles */
+  .particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .particle {
+    position: absolute;
+    background: var(--primary-color);
+    border-radius: 50%;
+    filter: blur(1px);
+    animation: float-particle linear infinite;
+  }
+
+  @keyframes float-particle {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+  }
+
+  /* Cyberpunk rain effect */
+  .cyber-rain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .rain-drop {
+    position: absolute;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--secondary-color));
+    animation: rain-fall linear infinite;
+  }
+
+  @keyframes rain-fall {
+    0% { transform: translateY(-100px); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+  }
+
+  /* Terminal-like blinking cursor */
+  .blinking-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    background: var(--primary-color);
+    margin-left: 5px;
+    animation: blink 1s infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Matrix code effect */
+  .matrix-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .matrix-container.active {
+    opacity: 0.7;
+  }
+
+  .matrix-column {
+    position: absolute;
+    top: 0;
+    font-family: 'Courier New', monospace;
+    color: var(--secondary-color);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    text-shadow: 0 0 5px var(--secondary-color);
   }
 
   /* Mobile-specific adjustments */
@@ -309,7 +586,7 @@
       cursor: default;
     }
     .social-icons a img {
-      transform: scale(1.1); /* Slightly larger for touch */
+      transform: scale(1.1);
     }
     .music-player {
       padding: 8px 12px;
@@ -327,31 +604,92 @@
       max-width: 90%;
     }
     .social-icons {
-      gap: 25px;
+      gap: 20px;
     }
     .music-player {
       flex-direction: column;
       align-items: flex-start;
     }
   }
+
+  /* Special effects for interactive elements */
+  .cyber-button {
+    position: relative;
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    padding: 10px 20px;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: none;
+    overflow: hidden;
+    margin-top: 20px;
+    text-shadow: var(--text-glow);
+    transition: all 0.3s ease;
+  }
+
+  .cyber-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 0, 60, 0.3), transparent);
+    transition: all 0.5s ease;
+  }
+
+  .cyber-button:hover::before {
+    left: 100%;
+  }
+
+  .cyber-button:hover {
+    color: var(--secondary-color);
+    text-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+  }
+
+  .cyber-button.active {
+    color: var(--secondary-color);
+    text-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+  }
+
+  .cyber-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--secondary-color);
+    animation: pulse 1.5s infinite;
+  }
 </style>
 </head>
 <body>
 
 <audio id="bgMusic" loop>
-  <source src="music/audio.mp3" type="audio/mpeg">
+  <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
+<div class="grid-overlay"></div>
+<div class="scanlines"></div>
+<div class="particles" id="particles"></div>
+<div class="cyber-rain" id="cyberRain"></div>
+<div class="matrix-container" id="matrixContainer"></div>
+
 <div class="custom-cursor" id="cursor"></div>
-<div class="fps" id="fpsCounter">FPS: --</div>
+<div class="fps" id="fpsCounter">SYSTEM STATUS: -- FPS</div>
 
 <div class="start-screen" id="startScreen">
-  <div class="start-text glitch" data-text="Press ENTER or Tap to Start">Press ENTER or Tap to Start</div>
+  <div class="start-text glitch" data-text="CYBERSPACE TERMINAL">CYBERSPACE TERMINAL</div>
+  <div class="start-subtext">[ ACCESS GRANTED ]</div>
+  <div class="start-subtext">PRESS ENTER OR TAP TO INITIALIZE</div>
 </div>
 
 <div class="music-player" id="musicPlayer">
-  <div class="music-title">Now Playing</div>
+  <div class="music-title" id="musicTitle">SYSTEM AUDIO: STANDBY</div>
   <div class="music-controls">
     <button class="music-btn" id="playPauseBtn">▶</button>
     <div class="volume-control">
@@ -362,74 +700,254 @@
 </div>
 
 <div class="card" id="mainCard" tabindex="0">
-  <h1>Welcome to My Domain</h1>
+  <h1>WELCOME TO MY CYBER DOMAIN<span class="blinking-cursor"></span></h1>
   <div class="photo"></div>
+  <p style="color: var(--secondary-color); margin-bottom: 20px; text-shadow: 0 0 5px var(--secondary-color);">
+    [ SYSTEM USER IDENTIFIED ]
+  </p>
   <div class="social-icons">
-    <a href="https://discord.com/channels/1161803566265143306" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord"></a>
-    <a href="https://www.instagram.com/saber.ai.6573?utm_source=ig_web_button_share_sheet&igsh=YzRlc3ZvaHNrcGVx" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram"></a>
-    <a href="https://fmhy.net/beginners-guide" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
-    <a href="https://x.com/" target="_blank" rel="noopener noreferrer"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670151.png" alt="X"></a>
+    <a href="https://discord.com/channels/1161803566265143306" target="_blank" rel="noopener noreferrer">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord">
+    </a>
+    <a href="https://www.instagram.com/saber.ai.6573?utm_source=ig_web_button_share_sheet&igsh=YzRlc3ZvaHNrcGVx" target="_blank" rel="noopener noreferrer">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
+    </a>
+    <a href="https://fmhy.net/beginners-guide" target="_blank" rel="noopener noreferrer">
+      <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+    </a>
+    <a href="https://x.com/" target="_blank" rel="noopener noreferrer">
+      <img src="https://cdn-icons-png.flaticon.com/512/3670/3670151.png" alt="X">
+    </a>
   </div>
+  <button class="cyber-button" id="matrixBtn">ACTIVATE MATRIX</button>
 </div>
 
 <script>
+// Enhanced cursor with cyberpunk effects
+const cursor = document.getElementById('cursor');
+let cursorX = 0;
+let cursorY = 0;
+let cursorTrail = [];
+
+// Create cursor trail elements
+for (let i = 0; i < 5; i++) {
+  const trail = document.createElement('div');
+  trail.className = 'custom-cursor';
+  trail.style.position = 'fixed';
+  trail.style.width = `${32 - i * 5}px`;
+  trail.style.height = `${32 - i * 5}px`;
+  trail.style.opacity = 1 - i * 0.2;
+  trail.style.zIndex = '9998';
+  trail.style.pointerEvents = 'none';
+  trail.style.display = 'none';
+  document.body.appendChild(trail);
+  cursorTrail.push({
+    element: trail,
+    x: 0,
+    y: 0,
+    delay: (i + 1) * 50
+  });
+}
+
 // Detect touch devices
 const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 // Hide cursor on touch devices
 if (isTouchDevice) {
-  document.getElementById('cursor').style.display = 'none';
+  cursor.style.display = 'none';
+  cursorTrail.forEach(trail => trail.element.style.display = 'none');
   document.body.style.cursor = 'default';
 }
 
-const cursor = document.getElementById('cursor');
+// Mouse move handler with trail effect
 document.addEventListener('mousemove', e => {
   if (!isTouchDevice) {
-    cursor.style.left = e.pageX + 'px';
-    cursor.style.top = e.pageY + 'px';
+    cursorX = e.pageX;
+    cursorY = e.pageY;
+    cursor.style.left = `${cursorX - 16}px`;
+    cursor.style.top = `${cursorY - 16}px`;
+    
+    // Update trail positions with delay
+    cursorTrail.forEach((trail, index) => {
+      setTimeout(() => {
+        trail.x = cursorX - (16 - index * 3);
+        trail.y = cursorY - (16 - index * 3);
+        trail.element.style.left = `${trail.x}px`;
+        trail.element.style.top = `${trail.y}px`;
+      }, trail.delay);
+    });
   }
 });
 
-function createFlower(x, y) {
-  const flower = document.createElement('div');
-  flower.style.position = 'absolute';
-  flower.style.left = `${x - 10}px`;
-  flower.style.top = `${y - 10}px`;
-  flower.style.width = '20px';
-  flower.style.height = '20px';
-  flower.style.borderRadius = '50%';
-  flower.style.background = 'radial-gradient(circle, #f00 0%, #4d0000 100%)';
-  flower.style.pointerEvents = 'none';
-  flower.style.opacity = 1;
-  flower.style.transition = 'all 0.8s ease-out';
-  document.body.appendChild(flower);
-  setTimeout(() => {
-    flower.style.transform = 'scale(3)';
-    flower.style.opacity = 0;
-  }, 10);
-  setTimeout(() => document.body.removeChild(flower), 800);
+// Create cyberpunk-style particles
+function createParticles() {
+  const particlesContainer = document.getElementById('particles');
+  particlesContainer.innerHTML = '';
+  
+  for (let i = 0; i < 50; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    
+    // Random properties
+    const size = Math.random() * 3 + 1;
+    const posX = Math.random() * window.innerWidth;
+    const posY = Math.random() * window.innerHeight;
+    const duration = Math.random() * 20 + 10;
+    const delay = Math.random() * 5;
+    
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.left = `${posX}px`;
+    particle.style.top = `${posY}px`;
+    particle.style.animationDuration = `${duration}s`;
+    particle.style.animationDelay = `${delay}s`;
+    
+    // Random color (primary or secondary)
+    particle.style.background = Math.random() > 0.5 ? 
+      `radial-gradient(circle, ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} 0%, transparent 70%)` : 
+      `radial-gradient(circle, ${getComputedStyle(document.documentElement).getPropertyValue('--secondary-color')} 0%, transparent 70%)`;
+    
+    particlesContainer.appendChild(particle);
+  }
 }
 
-// Click/touch handler
+// Create cyber rain effect
+function createCyberRain() {
+  const rainContainer = document.getElementById('cyberRain');
+  rainContainer.innerHTML = '';
+  
+  for (let i = 0; i < 100; i++) {
+    const drop = document.createElement('div');
+    drop.className = 'rain-drop';
+    
+    // Random properties
+    const length = Math.random() * 50 + 20;
+    const posX = Math.random() * window.innerWidth;
+    const duration = Math.random() * 1 + 0.5;
+    const delay = Math.random() * 2;
+    
+    drop.style.height = `${length}px`;
+    drop.style.left = `${posX}px`;
+    drop.style.animationDuration = `${duration}s`;
+    drop.style.animationDelay = `${delay}s`;
+    
+    // Random opacity
+    drop.style.opacity = Math.random() * 0.5 + 0.3;
+    
+    rainContainer.appendChild(drop);
+  }
+}
+
+// Interactive flower effect with cyberpunk style
+function createEnergyPulse(x, y) {
+  const pulse = document.createElement('div');
+  pulse.style.position = 'absolute';
+  pulse.style.left = `${x - 15}px`;
+  pulse.style.top = `${y - 15}px`;
+  pulse.style.width = '30px';
+  pulse.style.height = '30px';
+  pulse.style.borderRadius = '50%';
+  pulse.style.background = `radial-gradient(circle, ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} 0%, transparent 70%)`;
+  pulse.style.pointerEvents = 'none';
+  pulse.style.opacity = '0.8';
+  pulse.style.transition = 'all 0.8s ease-out';
+  pulse.style.zIndex = '9997';
+  document.body.appendChild(pulse);
+  
+  setTimeout(() => {
+    pulse.style.transform = 'scale(5)';
+    pulse.style.opacity = '0';
+  }, 10);
+  
+  setTimeout(() => document.body.removeChild(pulse), 800);
+  
+  // Create smaller particles
+  for (let i = 0; i < 8; i++) {
+    setTimeout(() => {
+      createEnergyParticle(x, y);
+    }, i * 50);
+  }
+}
+
+function createEnergyParticle(x, y) {
+  const particle = document.createElement('div');
+  particle.style.position = 'absolute';
+  particle.style.left = `${x - 2}px`;
+  particle.style.top = `${y - 2}px`;
+  particle.style.width = '4px';
+  particle.style.height = '4px';
+  particle.style.borderRadius = '50%';
+  particle.style.background = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+  particle.style.pointerEvents = 'none';
+  particle.style.opacity = '1';
+  particle.style.zIndex = '9997';
+  document.body.appendChild(particle);
+  
+  const angle = Math.random() * Math.PI * 2;
+  const distance = Math.random() * 50 + 30;
+  const duration = Math.random() * 0.5 + 0.3;
+  
+  const animation = particle.animate([
+    { transform: `translate(0, 0)`, opacity: 1 },
+    { transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`, opacity: 0 }
+  ], {
+    duration: duration * 1000,
+    easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+  });
+  
+  animation.onfinish = () => {
+    document.body.removeChild(particle);
+  };
+}
+
+// Click/touch handler with energy pulse effect
 function handleInteraction(e) {
   const x = e.pageX || (e.touches && e.touches[0].pageX) || 0;
   const y = e.pageY || (e.touches && e.touches[0].pageY) || 0;
-  createFlower(x, y);
+  createEnergyPulse(x, y);
+  
+  // Create a temporary ripple effect on the cursor
+  if (!isTouchDevice) {
+    cursor.style.transform = 'scale(1.5)';
+    cursor.style.boxShadow = `0 0 20px ${getComputedStyle(document.documentElement).getPropertyValue('--accent-color')}`;
+    setTimeout(() => {
+      cursor.style.transform = 'scale(1)';
+      cursor.style.boxShadow = 'none';
+    }, 300);
+  }
 }
 
 document.addEventListener('click', handleInteraction);
 document.addEventListener('touchstart', handleInteraction);
 
-// FPS counter
+// FPS counter with cyberpunk style
 let lastFrame = performance.now();
 let frameCount = 0;
 let fpsCounter = document.getElementById('fpsCounter');
+let fpsHistory = [];
+const maxFpsHistory = 10;
+
 function updateFPS() {
   const now = performance.now();
   frameCount++;
   
   if (now - lastFrame >= 1000) {
-    fpsCounter.textContent = `FPS: ${frameCount}`;
+    const fps = frameCount;
+    fpsHistory.push(fps);
+    if (fpsHistory.length > maxFpsHistory) {
+      fpsHistory.shift();
+    }
+    
+    const avgFps = Math.round(fpsHistory.reduce((a, b) => a + b, 0) / fpsHistory.length);
+    const systemStatus = fps >= 50 ? 'OPTIMAL' : fps >= 30 ? 'STABLE' : 'LAGGY';
+    
+    fpsCounter.textContent = `SYSTEM STATUS: ${systemStatus} | FPS: ${fps} | AVG: ${avgFps}`;
+    fpsCounter.style.color = fps >= 50 ? 
+      getComputedStyle(document.documentElement).getPropertyValue('--secondary-color') : 
+      fps >= 30 ? 
+      getComputedStyle(document.documentElement).getPropertyValue('--primary-color') : 
+      '#ff0000';
+    
     frameCount = 0;
     lastFrame = now;
   }
@@ -438,13 +956,13 @@ function updateFPS() {
 }
 updateFPS();
 
-// Music player functionality
+// Music player functionality with cyberpunk style
 const bgMusic = document.getElementById('bgMusic');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const muteBtn = document.getElementById('muteBtn');
 const volumeSlider = document.getElementById('volumeSlider');
 const musicPlayer = document.getElementById('musicPlayer');
-const musicTitle = document.querySelector('.music-title');
+const musicTitle = document.getElementById('musicTitle');
 
 // Set initial volume
 bgMusic.volume = volumeSlider.value;
@@ -452,13 +970,21 @@ bgMusic.volume = volumeSlider.value;
 // Play/Pause button
 playPauseBtn.addEventListener('click', () => {
   if (bgMusic.paused) {
-    bgMusic.play();
-    playPauseBtn.textContent = '❚❚';
-    musicTitle.textContent = 'Now Playing';
+    bgMusic.play()
+      .then(() => {
+        playPauseBtn.textContent = '❚❚';
+        musicTitle.textContent = 'SYSTEM AUDIO: ACTIVE';
+        musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+      })
+      .catch(e => {
+        console.log('Autoplay prevented, please interact to play');
+        musicTitle.textContent = 'SYSTEM AUDIO: CLICK TO ACTIVATE';
+      });
   } else {
     bgMusic.pause();
     playPauseBtn.textContent = '▶';
-    musicTitle.textContent = 'Paused';
+    musicTitle.textContent = 'SYSTEM AUDIO: STANDBY';
+    musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
   }
 });
 
@@ -466,6 +992,11 @@ playPauseBtn.addEventListener('click', () => {
 muteBtn.addEventListener('click', () => {
   bgMusic.muted = !bgMusic.muted;
   muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
+  musicTitle.textContent = bgMusic.muted ? 
+    'SYSTEM AUDIO: MUTED' : 
+    bgMusic.paused ? 
+    'SYSTEM AUDIO: STANDBY' : 
+    'SYSTEM AUDIO: ACTIVE';
 });
 
 // Volume slider
@@ -473,22 +1004,124 @@ volumeSlider.addEventListener('input', () => {
   bgMusic.volume = volumeSlider.value;
   bgMusic.muted = false;
   muteBtn.textContent = '🔊';
+  
+  // Visual feedback
+  volumeSlider.style.background = `linear-gradient(to right, 
+    ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} 0%, 
+    ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} ${volumeSlider.value * 100}%, 
+    rgba(255, 0, 60, 0.3) ${volumeSlider.value * 100}%, 
+    rgba(255, 0, 60, 0.3) 100%)`;
 });
 
-// Custom cursor for volume slider
-volumeSlider.addEventListener('mouseenter', () => {
-  if (!isTouchDevice) {
-    cursor.style.transform = 'scale(1.5)';
+// Custom cursor for interactive elements
+const interactiveElements = document.querySelectorAll('a, button, input, .music-btn, .social-icons a');
+interactiveElements.forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    if (!isTouchDevice) {
+      cursor.style.transform = 'scale(1.5)';
+      cursor.style.background = `radial-gradient(circle, ${getComputedStyle(document.documentElement).getPropertyValue('--accent-color')} 0%, transparent 70%)`;
+      cursor.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color');
+    }
+  });
+  
+  el.addEventListener('mouseleave', () => {
+    if (!isTouchDevice) {
+      cursor.style.transform = 'scale(1)';
+      cursor.style.background = `radial-gradient(circle, ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} 0%, transparent 70%)`;
+      cursor.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+    }
+  });
+});
+
+// Matrix effect variables
+let matrixActive = false;
+const matrixContainer = document.getElementById('matrixContainer');
+const matrixBtn = document.getElementById('matrixBtn');
+const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+let matrixColumns = [];
+let matrixAnimationId = null;
+
+// Create matrix columns
+function createMatrixColumns() {
+  matrixContainer.innerHTML = '';
+  matrixColumns = [];
+  
+  const columnCount = Math.floor(window.innerWidth / 20);
+  
+  for (let i = 0; i < columnCount; i++) {
+    const column = document.createElement('div');
+    column.className = 'matrix-column';
+    column.style.left = `${i * 20}px`;
+    column.style.fontSize = `${Math.random() * 10 + 12}px`;
+    column.style.animationDuration = `${Math.random() * 2 + 2}s`;
+    matrixContainer.appendChild(column);
+    
+    matrixColumns.push({
+      element: column,
+      chars: [],
+      speed: Math.random() * 2 + 1,
+      length: Math.floor(Math.random() * 15) + 10,
+      nextCharTime: 0
+    });
   }
-});
+}
 
-volumeSlider.addEventListener('mouseleave', () => {
-  if (!isTouchDevice) {
-    cursor.style.transform = 'scale(1)';
+// Update matrix animation
+function updateMatrix(timestamp) {
+  if (!matrixActive) return;
+  
+  matrixColumns.forEach(column => {
+    if (timestamp > column.nextCharTime) {
+      // Add new character
+      const newChar = {
+        char: chars[Math.floor(Math.random() * chars.length)],
+        opacity: 1,
+        y: 0
+      };
+      column.chars.unshift(newChar);
+      
+      // Remove old characters
+      if (column.chars.length > column.length) {
+        column.chars.pop();
+      }
+      
+      // Update character positions and opacities
+      let columnText = '';
+      column.chars.forEach((char, index) => {
+        char.y += column.speed;
+        char.opacity = index / column.chars.length;
+        columnText += `<span style="opacity:${char.opacity}">${char.char}</span>`;
+      });
+      
+      column.element.innerHTML = columnText;
+      column.nextCharTime = timestamp + 100;
+    }
+  });
+  
+  matrixAnimationId = requestAnimationFrame(updateMatrix);
+}
+
+// Toggle matrix effect
+function toggleMatrix() {
+  matrixActive = !matrixActive;
+  
+  if (matrixActive) {
+    matrixContainer.classList.add('active');
+    createMatrixColumns();
+    matrixAnimationId = requestAnimationFrame(updateMatrix);
+    matrixBtn.classList.add('active');
+    matrixBtn.textContent = 'MATRIX ACTIVE';
+  } else {
+    matrixContainer.classList.remove('active');
+    if (matrixAnimationId) {
+      cancelAnimationFrame(matrixAnimationId);
+    }
+    matrixBtn.classList.remove('active');
+    matrixBtn.textContent = 'ACTIVATE MATRIX';
   }
-});
+}
 
-// Start experience function
+// Start experience function with cyberpunk effects
 function startExperience() {
   // Add glitch effect to start screen
   const startScreen = document.getElementById('startScreen');
@@ -496,21 +1129,40 @@ function startExperience() {
   void startScreen.offsetWidth; // Trigger reflow
   startScreen.style.animation = 'fadeIn 0.25s ease';
   
+  // Create particles and rain
+  createParticles();
+  createCyberRain();
+  
+  // Add transition effect
   setTimeout(() => {
-    startScreen.style.display = 'none';
-    const mainCard = document.getElementById('mainCard');
-    mainCard.style.display = 'block';
+    startScreen.style.opacity = '0';
     
-    // Start music automatically
-    bgMusic.play().catch(e => {
-      console.log('Autoplay prevented, please interact to play');
-      musicTitle.textContent = 'Click to Play';
-    });
-    playPauseBtn.textContent = '❚❚';
-    
-    mainCard.focus();
+    setTimeout(() => {
+      startScreen.style.display = 'none';
+      const mainCard = document.getElementById('mainCard');
+      mainCard.style.display = 'block';
+      
+      // Start music automatically
+      bgMusic.play().catch(e => {
+        console.log('Autoplay prevented, please interact to play');
+        musicTitle.textContent = 'SYSTEM AUDIO: CLICK TO ACTIVATE';
+      });
+      playPauseBtn.textContent = '❚❚';
+      musicTitle.textContent = 'SYSTEM AUDIO: ACTIVE';
+      musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+      
+      mainCard.focus();
+      
+      // Show cursor trail if not touch device
+      if (!isTouchDevice) {
+        cursorTrail.forEach(trail => trail.element.style.display = 'block');
+      }
+    }, 500);
   }, 250);
 }
+
+// Matrix button event listener
+matrixBtn.addEventListener('click', toggleMatrix);
 
 // Start event listeners
 window.addEventListener('keydown', e => {
@@ -535,20 +1187,17 @@ document.addEventListener('touchend', function(event) {
   lastTouchEnd = now;
 }, false);
 
-// Add hover effect to music player buttons
-const musicBtns = document.querySelectorAll('.music-btn');
-musicBtns.forEach(btn => {
-  btn.addEventListener('mouseenter', () => {
-    if (!isTouchDevice) {
-      cursor.style.transform = 'scale(1.5)';
-    }
-  });
-  btn.addEventListener('mouseleave', () => {
-    if (!isTouchDevice) {
-      cursor.style.transform = 'scale(1)';
-    }
-  });
+// Window resize handler
+window.addEventListener('resize', () => {
+  createParticles();
+  createCyberRain();
+  if (matrixActive) {
+    createMatrixColumns();
+  }
 });
+
+// Initialize with particles even before start
+createParticles();
 </script>
 
 </body>
