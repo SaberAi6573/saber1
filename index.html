@@ -3,19 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CYBERSPACE TERMINAL</title>
+<title>CYBER ANIME TERMINAL</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&family=Share+Tech+Mono&display=swap');
 
   :root {
-    --primary-color: #ff003c;
-    --secondary-color: #00f0ff;
-    --accent-color: #ff00f0;
-    --text-glow: 0 0 10px #ff003c, 0 0 20px #ff003c;
-    --neon-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
-    --scanline-color: rgba(0, 255, 255, 0.05);
-    --terminal-bg: rgba(0, 0, 0, 0.85);
-    --grid-line: 1px solid rgba(0, 240, 255, 0.1);
+    --primary-color: #00ff9d;  /* Neon Green */
+    --secondary-color: #ff00aa; /* Neon Pink */
+    --accent-color: #00b8ff;   /* Neon Blue */
+    --dark-bg: #0a0a12;
+    --darker-bg: #050508;
+    --text-glow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
+    --neon-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
+    --scanline-color: rgba(0, 255, 157, 0.05);
+    --terminal-bg: rgba(10, 10, 18, 0.85);
+    --grid-line: 1px solid rgba(0, 255, 157, 0.15);
+    --terminal-border: 2px solid var(--primary-color);
   }
 
   * {
@@ -29,10 +32,10 @@
     height: 100vh;
     width: 100vw;
     background: 
-      radial-gradient(circle at center, rgba(255,0,60,0.1) 0%, transparent 70%),
-      linear-gradient(to bottom, #000000 0%, #0a0a20 100%);
+      radial-gradient(circle at center, rgba(0, 255, 157, 0.05) 0%, transparent 70%),
+      linear-gradient(to bottom, var(--darker-bg) 0%, var(--dark-bg) 100%);
     overflow: hidden;
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Share Tech Mono', monospace;
     color: var(--primary-color);
     display: flex;
     justify-content: center;
@@ -42,7 +45,7 @@
     position: relative;
   }
 
-  /* Cyberpunk grid background */
+  /* Cyber grid background */
   .grid-overlay {
     position: fixed;
     top: 0;
@@ -54,10 +57,10 @@
       linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 40px 40px;
     z-index: -1;
-    opacity: 0.3;
+    opacity: 0.5;
   }
 
-  /* CRT scanline effect */
+  /* Scanline effect */
   .scanlines {
     position: fixed;
     top: 0;
@@ -81,12 +84,12 @@
     100% { background-position: 0 100%; }
   }
 
-  /* Custom cursor with cyberpunk style */
+  /* Cyber cursor */
   .custom-cursor {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
-    border: 2px solid var(--primary-color);
+    border: 1px solid var(--primary-color);
     border-radius: 50%;
     position: absolute;
     pointer-events: none;
@@ -101,12 +104,10 @@
   }
 
   .custom-cursor::before {
-    content: '';
+    content: '◉';
     position: absolute;
-    width: 6px;
-    height: 6px;
-    background: var(--secondary-color);
-    border-radius: 50%;
+    font-size: 8px;
+    color: var(--accent-color);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -119,12 +120,12 @@
     100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
   }
 
-  /* Start screen with glitch effect */
+  /* Start screen with cyber style */
   .start-screen {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.98);
+    background: rgba(5, 5, 8, 0.98);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -138,22 +139,29 @@
   .start-text {
     font-size: clamp(1.5rem, 5vw, 2.5rem);
     color: var(--primary-color);
-    text-shadow: var(--text-glow);
-    animation: float 3s ease-in-out infinite;
+    text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+    animation: float 3s ease-in-out infinite, textGlow 2s ease-in-out infinite alternate;
     text-align: center;
     position: relative;
     padding: 0 20px;
     font-weight: 700;
     letter-spacing: 2px;
+    font-family: 'Press Start 2P', cursive;
+  }
+
+  @keyframes textGlow {
+    0% { text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color); }
+    100% { text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color), 0 0 45px var(--secondary-color); }
   }
 
   .start-subtext {
     font-size: clamp(0.8rem, 3vw, 1.2rem);
-    color: var(--secondary-color);
+    color: var(--accent-color);
     margin-top: 20px;
     text-align: center;
     opacity: 0.8;
     animation: fadeInOut 4s infinite;
+    text-shadow: 0 0 5px var(--accent-color);
   }
 
   @keyframes fadeInOut {
@@ -162,47 +170,21 @@
     100% { opacity: 0.5; }
   }
 
-  /* Glitch effect styles */
-  .glitch {
-    position: relative;
-  }
-  .glitch::before, .glitch::after {
-    content: attr(data-text);
+  /* Cyber sparkle effect */
+  .sparkle {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.98);
-  }
-  .glitch::before {
-    left: 2px;
-    text-shadow: -2px 0 var(--secondary-color);
-    clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim-1 2s infinite linear alternate-reverse;
-  }
-  .glitch::after {
-    left: -2px;
-    text-shadow: -2px 0 var(--accent-color);
-    clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim-2 2s infinite linear alternate-reverse;
+    width: 10px;
+    height: 10px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    filter: blur(1px);
+    animation: sparkle 2s infinite;
   }
 
-  @keyframes glitch-anim-1 {
-    0% { clip: rect(32px, 9999px, 78px, 0); }
-    20% { clip: rect(8px, 9999px, 32px, 0); }
-    40% { clip: rect(64px, 9999px, 99px, 0); }
-    60% { clip: rect(12px, 9999px, 45px, 0); }
-    80% { clip: rect(88px, 9999px, 72px, 0); }
-    100% { clip: rect(1px, 9999px, 99px, 0); }
-  }
-  @keyframes glitch-anim-2 {
-    0% { clip: rect(90px, 9999px, 98px, 0); }
-    20% { clip: rect(3px, 9999px, 8px, 0); }
-    40% { clip: rect(67px, 9999px, 82px, 0); }
-    60% { clip: rect(23px, 9999px, 89px, 0); }
-    80% { clip: rect(12px, 9999px, 54px, 0); }
-    100% { clip: rect(78px, 9999px, 1px, 0); }
+  @keyframes sparkle {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.5); opacity: 1; }
+    100% { transform: scale(0.5); opacity: 0; }
   }
 
   @keyframes fadeIn {
@@ -210,13 +192,13 @@
     to { opacity: 1; }
   }
 
-  /* Main card with terminal style */
+  /* Main card with cyber terminal style */
   .card {
     background: var(--terminal-bg);
-    border: 1px solid var(--primary-color);
+    border: var(--terminal-border);
     border-radius: 5px;
     padding: clamp(20px, 5vw, 35px);
-    box-shadow: 0 0 30px var(--primary-color);
+    box-shadow: 0 0 20px var(--primary-color), 0 0 40px rgba(0, 255, 157, 0.3);
     text-align: center;
     z-index: 2;
     display: none;
@@ -253,9 +235,11 @@
   .card h1 {
     font-size: clamp(1.5rem, 5vw, 2.2rem);
     margin-bottom: 20px;
-    text-shadow: var(--text-glow);
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color);
     position: relative;
     letter-spacing: 1px;
+    font-family: 'Press Start 2P', cursive;
   }
 
   .card h1::after {
@@ -273,7 +257,7 @@
     height: clamp(120px, 30vw, 180px);
     border-radius: 50%;
     margin: 0 auto 20px;
-    background: url('https://cdn.discordapp.com/attachments/1381495592110526465/1385852513781153863/e7b80a0dfdab85526e4c45919381da6d.jpg?ex=6867653b&is=686613bb&hm=d90b1c1dcdb422078177fc0ef164a0614aefb79d8aeb8337e48828b1ec970c34&.png') no-repeat center center/cover;
+    background: url('https://i.imgur.com/JYj7ZzX.png') no-repeat center center/cover;
     box-shadow: 0 0 20px var(--primary-color);
     border: 2px solid var(--primary-color);
     position: relative;
@@ -293,7 +277,7 @@
     right: -5px;
     bottom: -5px;
     border-radius: 50%;
-    border: 2px solid var(--secondary-color);
+    border: 2px dashed var(--accent-color);
     animation: rotate 10s linear infinite;
     opacity: 0.7;
   }
@@ -328,7 +312,7 @@
     left: -5px;
     right: -5px;
     bottom: -5px;
-    border: 1px solid var(--secondary-color);
+    border: 1px solid var(--accent-color);
     border-radius: 50%;
     opacity: 0;
     transition: all 0.3s ease;
@@ -342,32 +326,32 @@
   .social-icons a img {
     width: clamp(40px, 8vw, 55px);
     height: clamp(40px, 8vw, 55px);
-    filter: drop-shadow(0 0 10px var(--primary-color));
+    filter: drop-shadow(0 0 5px var(--primary-color)) brightness(1.2);
     transition: all 0.3s ease;
   }
 
   .social-icons a:hover img {
     transform: scale(1.2);
-    filter: drop-shadow(0 0 15px var(--accent-color));
+    filter: drop-shadow(0 0 10px var(--accent-color)) brightness(1.5);
   }
 
-  /* FPS counter with terminal style */
+  /* FPS counter with cyber style */
   .fps {
     position: fixed;
     top: 10px;
     left: 10px;
     background: rgba(0, 0, 0, 0.7);
-    color: var(--secondary-color);
+    color: var(--primary-color);
     padding: 5px 10px;
     border-radius: 3px;
     font-size: 0.8rem;
     z-index: 1000;
-    box-shadow: 0 0 10px var(--primary-color);
-    font-family: 'Rajdhani', sans-serif;
-    border: 1px solid var(--secondary-color);
+    box-shadow: 0 0 5px var(--primary-color);
+    font-family: 'Press Start 2P', cursive;
+    border: 1px solid var(--primary-color);
   }
 
-  /* Music player with cyberpunk style */
+  /* Music player with cyber style */
   .music-player {
     position: fixed;
     bottom: 20px;
@@ -376,19 +360,19 @@
     border: 1px solid var(--primary-color);
     border-radius: 5px;
     padding: 10px 15px;
-    box-shadow: 0 0 15px var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color);
     z-index: 1000;
     display: flex;
     align-items: center;
     gap: 12px;
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: 'Press Start 2P', cursive;
   }
 
   .music-player:hover {
-    box-shadow: 0 0 25px var(--accent-color);
-    border-color: var(--secondary-color);
+    box-shadow: 0 0 15px var(--accent-color);
+    border-color: var(--accent-color);
   }
 
   .music-controls {
@@ -403,7 +387,7 @@
     color: var(--primary-color);
     font-size: 18px;
     cursor: none;
-    text-shadow: var(--text-glow);
+    text-shadow: 0 0 5px var(--primary-color);
     transition: all 0.2s ease;
     padding: 5px;
     border-radius: 3px;
@@ -422,13 +406,14 @@
     left: 0;
     width: 100%;
     height: 1px;
-    background: var(--secondary-color);
+    background: var(--primary-color);
     transform: scaleX(0);
     transition: transform 0.3s ease;
   }
 
   .music-btn:hover {
-    color: var(--secondary-color);
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-color);
   }
 
   .music-btn:hover::after {
@@ -445,8 +430,8 @@
     width: 80px;
     -webkit-appearance: none;
     height: 3px;
-    background: rgba(255, 0, 60, 0.3);
-    border-radius: 2px;
+    background: rgba(0, 255, 157, 0.3);
+    border-radius: 5px;
     outline: none;
     cursor: none;
   }
@@ -460,21 +445,18 @@
     cursor: none;
     box-shadow: 0 0 5px var(--primary-color);
     transition: all 0.2s ease;
+    border: 1px solid black;
   }
 
   .volume-slider::-webkit-slider-thumb:hover {
-    background: var(--secondary-color);
+    background: var(--accent-color);
     transform: scale(1.2);
-  }
-
-  .volume-slider::-moz-range-thumb {
-    cursor: none;
   }
 
   .music-title {
     font-size: 12px;
-    color: var(--secondary-color);
-    text-shadow: 0 0 5px var(--secondary-color);
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -482,8 +464,8 @@
     letter-spacing: 0.5px;
   }
 
-  /* Floating particles */
-  .particles {
+  /* Floating binary code */
+  .binary-code {
     position: fixed;
     top: 0;
     left: 0;
@@ -493,56 +475,30 @@
     z-index: -1;
   }
 
-  .particle {
+  .binary-digit {
     position: absolute;
-    background: var(--primary-color);
-    border-radius: 50%;
-    filter: blur(1px);
-    animation: float-particle linear infinite;
+    color: rgba(0, 255, 157, 0.3);
+    font-family: 'Share Tech Mono', monospace;
+    animation: float-down linear infinite;
   }
 
-  @keyframes float-particle {
-    0% { transform: translateY(0) translateX(0); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
-  }
-
-  /* Cyberpunk rain effect */
-  .cyber-rain {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-    overflow: hidden;
-  }
-
-  .rain-drop {
-    position: absolute;
-    width: 1px;
-    background: linear-gradient(to bottom, transparent, var(--secondary-color));
-    animation: rain-fall linear infinite;
-  }
-
-  @keyframes rain-fall {
+  @keyframes float-down {
     0% { transform: translateY(-100px); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
+    10% { opacity: 0.5; }
+    90% { opacity: 0.5; }
     100% { transform: translateY(100vh); opacity: 0; }
   }
 
-  /* Terminal-like blinking cursor */
+  /* Blinking cursor */
   .blinking-cursor {
     display: inline-block;
-    width: 10px;
-    height: 20px;
+    width: 8px;
+    height: 16px;
     background: var(--primary-color);
     margin-left: 5px;
     animation: blink 1s infinite;
     vertical-align: middle;
+    box-shadow: 0 0 5px var(--primary-color);
   }
 
   @keyframes blink {
@@ -550,8 +506,8 @@
     50% { opacity: 0; }
   }
 
-  /* Matrix code effect */
-  .matrix-container {
+  /* Cyber sparkle effect */
+  .sparkle-container {
     position: fixed;
     top: 0;
     left: 0;
@@ -563,18 +519,44 @@
     transition: opacity 0.5s ease;
   }
 
-  .matrix-container.active {
+  .sparkle-container.active {
     opacity: 0.7;
   }
 
-  .matrix-column {
+  .sparkle-column {
     position: absolute;
     top: 0;
-    font-family: 'Courier New', monospace;
-    color: var(--secondary-color);
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--accent-color);
     writing-mode: vertical-rl;
     text-orientation: mixed;
-    text-shadow: 0 0 5px var(--secondary-color);
+    text-shadow: 0 0 5px var(--accent-color);
+  }
+
+  /* Cyber rain effect */
+  .cyber-rain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .cyber-drop {
+    position: absolute;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--primary-color));
+    animation: cyber-fall linear infinite;
+  }
+
+  @keyframes cyber-fall {
+    0% { transform: translateY(-100px); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% { transform: translateY(100vh); opacity: 0; }
   }
 
   /* Mobile-specific adjustments */
@@ -612,21 +594,22 @@
     }
   }
 
-  /* Special effects for interactive elements */
+  /* Cyber button style */
   .cyber-button {
     position: relative;
     background: transparent;
-    border: none;
+    border: 1px solid var(--primary-color);
     color: var(--primary-color);
-    padding: 10px 20px;
-    font-family: 'Orbitron', sans-serif;
+    padding: 12px 24px;
+    font-family: 'Share Tech Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 2px;
     cursor: none;
     overflow: hidden;
     margin-top: 20px;
-    text-shadow: var(--text-glow);
+    text-shadow: 0 0 5px var(--primary-color);
     transition: all 0.3s ease;
+    box-shadow: 0 0 10px var(--primary-color), inset 0 0 10px var(--primary-color);
   }
 
   .cyber-button::before {
@@ -636,7 +619,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 0, 60, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 157, 0.3), transparent);
     transition: all 0.5s ease;
   }
 
@@ -645,51 +628,177 @@
   }
 
   .cyber-button:hover {
-    color: var(--secondary-color);
-    text-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-color);
+    box-shadow: 0 0 20px var(--primary-color), inset 0 0 20px var(--primary-color);
+    border-color: var(--accent-color);
+  }
+
+  .cyber-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 0 5px var(--primary-color), inset 0 0 5px var(--primary-color);
   }
 
   .cyber-button.active {
-    color: var(--secondary-color);
-    text-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+    color: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-color), inset 0 0 15px var(--accent-color);
+    border-color: var(--accent-color);
   }
 
   .cyber-button.active::after {
-    content: '';
+    content: '◈';
     position: absolute;
-    bottom: 0;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: pulse 1.5s infinite;
+  }
+
+  /* Terminal decoration */
+  .terminal-decoration {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Floating hexagons */
+  .hexagon-container {
+    position: fixed;
+    top: 0;
     left: 0;
     width: 100%;
-    height: 2px;
-    background: var(--secondary-color);
-    animation: pulse 1.5s infinite;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .hexagon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%2300ff9d" fill-opacity="0.1" d="M50 0L100 25V75L50 100L0 75V25Z"/></svg>') no-repeat center center/contain;
+    animation: float-hexagon linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes float-hexagon {
+    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.3; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-100vh) translateX(20px) rotate(360deg); opacity: 0; }
+  }
+
+  /* Terminal input effect */
+  .terminal-input {
+    position: relative;
+    margin-top: 20px;
+  }
+
+  .terminal-input::before {
+    content: '>';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+  }
+
+  .terminal-input input {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 10px 10px 10px 30px;
+    width: 100%;
+    font-family: 'Share Tech Mono', monospace;
+    box-shadow: 0 0 10px var(--primary-color);
+  }
+
+  .terminal-input input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-color);
+  }
+
+  /* Status bars */
+  .status-bars {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .status-bar {
+    flex: 1;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--primary-color);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .status-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+    animation: status-animation 3s infinite alternate;
+  }
+
+  @keyframes status-animation {
+    0% { width: 30%; }
+    100% { width: 100%; }
+  }
+
+  .status-bar:nth-child(1)::after {
+    animation-delay: 0s;
+  }
+  .status-bar:nth-child(2)::after {
+    animation-delay: 0.5s;
+  }
+  .status-bar:nth-child(3)::after {
+    animation-delay: 1s;
   }
 </style>
 </head>
 <body>
 
 <audio id="bgMusic" loop>
-  <source src="music/audio.mp3" type="audio/mpeg">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
 <div class="grid-overlay"></div>
 <div class="scanlines"></div>
-<div class="particles" id="particles"></div>
+<div class="binary-code" id="binaryCode"></div>
 <div class="cyber-rain" id="cyberRain"></div>
-<div class="matrix-container" id="matrixContainer"></div>
+<div class="sparkle-container" id="sparkleContainer"></div>
+<div class="hexagon-container" id="hexagonContainer"></div>
+
+<!-- Terminal decorations -->
+<div class="terminal-decoration" style="bottom: 20px; right: 20px; background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path fill=\"%2300ff9d\" fill-opacity=\"0.3\" d=\"M50 0L100 25V75L50 100L0 75V25Z\"/></svg>') no-repeat center center/contain;"></div>
+<div class="terminal-decoration" style="top: 20px; left: 20px; background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"%2300b8ff\" fill-opacity=\"0.2\" /></svg>') no-repeat center center/contain;"></div>
 
 <div class="custom-cursor" id="cursor"></div>
-<div class="fps" id="fpsCounter">SYSTEM STATUS: -- FPS</div>
+<div class="fps" id="fpsCounter">FPS: --</div>
 
 <div class="start-screen" id="startScreen">
-  <div class="start-text glitch" data-text="CYBERSPACE TERMINAL">CYBERSPACE TERMINAL</div>
-  <div class="start-subtext">[ ACCESS GRANTED ]</div>
+  <div class="start-text">CYBER ANIME TERMINAL</div>
+  <div class="start-subtext">[ システム起動中 ]</div>
   <div class="start-subtext">PRESS ENTER OR TAP TO INITIALIZE</div>
+  
+  <!-- Add sparkles to start screen -->
+  <div class="sparkle" style="top: 30%; left: 30%; background: var(--primary-color);"></div>
+  <div class="sparkle" style="top: 70%; left: 70%; animation-delay: 0.5s; background: var(--accent-color);"></div>
+  <div class="sparkle" style="top: 40%; left: 80%; animation-delay: 1s; background: var(--secondary-color);"></div>
+  <div class="sparkle" style="top: 60%; left: 20%; animation-delay: 1.5s; background: var(--primary-color);"></div>
 </div>
 
 <div class="music-player" id="musicPlayer">
-  <div class="music-title" id="musicTitle">SYSTEM AUDIO: STANDBY</div>
+  <div class="music-title" id="musicTitle">BGM: SYSTEM BOOT</div>
   <div class="music-controls">
     <button class="music-btn" id="playPauseBtn">▶</button>
     <div class="volume-control">
@@ -700,10 +809,10 @@
 </div>
 
 <div class="card" id="mainCard" tabindex="0">
-  <h1>WELCOME TO MY CYBER DOMAIN<span class="blinking-cursor"></span></h1>
+  <h1>CYBER ANIME TERMINAL<span class="blinking-cursor"></span></h1>
   <div class="photo"></div>
-  <p style="color: var(--secondary-color); margin-bottom: 20px; text-shadow: 0 0 5px var(--secondary-color);">
-    [ SYSTEM USER IDENTIFIED ]
+  <p style="color: var(--accent-color); margin-bottom: 20px; text-shadow: 0 0 5px var(--accent-color);">
+    [ USER PROFILE LOADED ]
   </p>
   <div class="social-icons">
     <a href="https://discord.com/channels/1161803566265143306" target="_blank" rel="noopener noreferrer">
@@ -712,18 +821,26 @@
     <a href="https://www.instagram.com/saber.ai.6573?utm_source=ig_web_button_share_sheet&igsh=YzRlc3ZvaHNrcGVx" target="_blank" rel="noopener noreferrer">
       <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
     </a>
-    <a href="https://fmhy.net/beginners-guide" target="_blank" rel="noopener noreferrer">
+    <a href="https://everythingmoe.com/" target="_blank" rel="noopener noreferrer">
       <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
     </a>
-    <a href="https://x.com/" target="_blank" rel="noopener noreferrer">
-      <img src="https://cdn-icons-png.flaticon.com/512/3670/3670151.png" alt="X">
+    <a href="https://anilist.co/user/Saber6573/" target="_blank" rel="noopener noreferrer">
+      <img src="https://ik.imagekit.io/Saber/AniList_logo.svg.png?updatedAt=1752240661687" alt="Anilist">
     </a>
   </div>
-  <button class="cyber-button" id="matrixBtn">ACTIVATE MATRIX</button>
+  <div class="terminal-input">
+    <input type="text" placeholder="ENTER COMMAND...">
+  </div>
+  <div class="status-bars">
+    <div class="status-bar"></div>
+    <div class="status-bar"></div>
+    <div class="status-bar"></div>
+  </div>
+  <button class="cyber-button" id="sparkleBtn">ACTIVATE NEON MODE</button>
 </div>
 
 <script>
-// Enhanced cursor with cyberpunk effects
+// Cyber cursor with trail effect
 const cursor = document.getElementById('cursor');
 let cursorX = 0;
 let cursorY = 0;
@@ -734,8 +851,8 @@ for (let i = 0; i < 5; i++) {
   const trail = document.createElement('div');
   trail.className = 'custom-cursor';
   trail.style.position = 'fixed';
-  trail.style.width = `${32 - i * 5}px`;
-  trail.style.height = `${32 - i * 5}px`;
+  trail.style.width = `${24 - i * 4}px`;
+  trail.style.height = `${24 - i * 4}px`;
   trail.style.opacity = 1 - i * 0.2;
   trail.style.zIndex = '9998';
   trail.style.pointerEvents = 'none';
@@ -764,14 +881,14 @@ document.addEventListener('mousemove', e => {
   if (!isTouchDevice) {
     cursorX = e.pageX;
     cursorY = e.pageY;
-    cursor.style.left = `${cursorX - 16}px`;
-    cursor.style.top = `${cursorY - 16}px`;
+    cursor.style.left = `${cursorX - 12}px`;
+    cursor.style.top = `${cursorY - 12}px`;
     
     // Update trail positions with delay
     cursorTrail.forEach((trail, index) => {
       setTimeout(() => {
-        trail.x = cursorX - (16 - index * 3);
-        trail.y = cursorY - (16 - index * 3);
+        trail.x = cursorX - (12 - index * 2);
+        trail.y = cursorY - (12 - index * 2);
         trail.element.style.left = `${trail.x}px`;
         trail.element.style.top = `${trail.y}px`;
       }, trail.delay);
@@ -779,35 +896,28 @@ document.addEventListener('mousemove', e => {
   }
 });
 
-// Create cyberpunk-style particles
-function createParticles() {
-  const particlesContainer = document.getElementById('particles');
-  particlesContainer.innerHTML = '';
+// Create binary code rain
+function createBinaryCode() {
+  const binaryContainer = document.getElementById('binaryCode');
+  binaryContainer.innerHTML = '';
   
-  for (let i = 0; i < 50; i++) {
-    const particle = document.createElement('div');
-    particle.className = 'particle';
+  for (let i = 0; i < 100; i++) {
+    const digit = document.createElement('div');
+    digit.className = 'binary-digit';
+    digit.textContent = Math.random() > 0.5 ? '1' : '0';
     
     // Random properties
-    const size = Math.random() * 3 + 1;
+    const size = Math.random() * 14 + 10;
     const posX = Math.random() * window.innerWidth;
-    const posY = Math.random() * window.innerHeight;
-    const duration = Math.random() * 20 + 10;
+    const duration = Math.random() * 5 + 5;
     const delay = Math.random() * 5;
     
-    particle.style.width = `${size}px`;
-    particle.style.height = `${size}px`;
-    particle.style.left = `${posX}px`;
-    particle.style.top = `${posY}px`;
-    particle.style.animationDuration = `${duration}s`;
-    particle.style.animationDelay = `${delay}s`;
+    digit.style.fontSize = `${size}px`;
+    digit.style.left = `${posX}px`;
+    digit.style.animationDuration = `${duration}s`;
+    digit.style.animationDelay = `${delay}s`;
     
-    // Random color (primary or secondary)
-    particle.style.background = Math.random() > 0.5 ? 
-      `radial-gradient(circle, ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} 0%, transparent 70%)` : 
-      `radial-gradient(circle, ${getComputedStyle(document.documentElement).getPropertyValue('--secondary-color')} 0%, transparent 70%)`;
-    
-    particlesContainer.appendChild(particle);
+    binaryContainer.appendChild(digit);
   }
 }
 
@@ -818,7 +928,7 @@ function createCyberRain() {
   
   for (let i = 0; i < 100; i++) {
     const drop = document.createElement('div');
-    drop.className = 'rain-drop';
+    drop.className = 'cyber-drop';
     
     // Random properties
     const length = Math.random() * 50 + 20;
@@ -831,45 +941,71 @@ function createCyberRain() {
     drop.style.animationDuration = `${duration}s`;
     drop.style.animationDelay = `${delay}s`;
     
-    // Random opacity
-    drop.style.opacity = Math.random() * 0.5 + 0.3;
-    
     rainContainer.appendChild(drop);
   }
 }
 
-// Interactive flower effect with cyberpunk style
-function createEnergyPulse(x, y) {
-  const pulse = document.createElement('div');
-  pulse.style.position = 'absolute';
-  pulse.style.left = `${x - 15}px`;
-  pulse.style.top = `${y - 15}px`;
-  pulse.style.width = '30px';
-  pulse.style.height = '30px';
-  pulse.style.borderRadius = '50%';
-  pulse.style.background = `radial-gradient(circle, ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} 0%, transparent 70%)`;
-  pulse.style.pointerEvents = 'none';
-  pulse.style.opacity = '0.8';
-  pulse.style.transition = 'all 0.8s ease-out';
-  pulse.style.zIndex = '9997';
-  document.body.appendChild(pulse);
+// Create floating hexagons
+function createFloatingHexagons() {
+  const hexagonContainer = document.getElementById('hexagonContainer');
+  hexagonContainer.innerHTML = '';
+  
+  for (let i = 0; i < 20; i++) {
+    const hexagon = document.createElement('div');
+    hexagon.className = 'hexagon';
+    
+    // Random properties
+    const size = Math.random() * 30 + 20;
+    const posX = Math.random() * window.innerWidth;
+    const posY = Math.random() * window.innerHeight + window.innerHeight;
+    const duration = Math.random() * 15 + 10;
+    const delay = Math.random() * 5;
+    const opacity = Math.random() * 0.2 + 0.1;
+    
+    hexagon.style.width = `${size}px`;
+    hexagon.style.height = `${size}px`;
+    hexagon.style.left = `${posX}px`;
+    hexagon.style.top = `${posY}px`;
+    hexagon.style.animationDuration = `${duration}s`;
+    hexagon.style.animationDelay = `${delay}s`;
+    hexagon.style.opacity = opacity;
+    
+    hexagonContainer.appendChild(hexagon);
+  }
+}
+
+// Create sparkle effect
+function createSparkleEffect(x, y) {
+  const sparkle = document.createElement('div');
+  sparkle.style.position = 'absolute';
+  sparkle.style.left = `${x - 15}px`;
+  sparkle.style.top = `${y - 15}px`;
+  sparkle.style.width = '30px';
+  sparkle.style.height = '30px';
+  sparkle.style.background = `radial-gradient(circle, var(--primary-color) 0%, transparent 70%)`;
+  sparkle.style.borderRadius = '50%';
+  sparkle.style.pointerEvents = 'none';
+  sparkle.style.opacity = '0.8';
+  sparkle.style.transition = 'all 0.8s ease-out';
+  sparkle.style.zIndex = '9997';
+  document.body.appendChild(sparkle);
   
   setTimeout(() => {
-    pulse.style.transform = 'scale(5)';
-    pulse.style.opacity = '0';
+    sparkle.style.transform = 'scale(3)';
+    sparkle.style.opacity = '0';
   }, 10);
   
-  setTimeout(() => document.body.removeChild(pulse), 800);
+  setTimeout(() => document.body.removeChild(sparkle), 800);
   
-  // Create smaller particles
+  // Create smaller sparkles
   for (let i = 0; i < 8; i++) {
     setTimeout(() => {
-      createEnergyParticle(x, y);
+      createSparkleParticle(x, y);
     }, i * 50);
   }
 }
 
-function createEnergyParticle(x, y) {
+function createSparkleParticle(x, y) {
   const particle = document.createElement('div');
   particle.style.position = 'absolute';
   particle.style.left = `${x - 2}px`;
@@ -877,7 +1013,7 @@ function createEnergyParticle(x, y) {
   particle.style.width = '4px';
   particle.style.height = '4px';
   particle.style.borderRadius = '50%';
-  particle.style.background = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+  particle.style.background = 'var(--primary-color)';
   particle.style.pointerEvents = 'none';
   particle.style.opacity = '1';
   particle.style.zIndex = '9997';
@@ -900,16 +1036,16 @@ function createEnergyParticle(x, y) {
   };
 }
 
-// Click/touch handler with energy pulse effect
+// Click/touch handler with sparkle effect
 function handleInteraction(e) {
   const x = e.pageX || (e.touches && e.touches[0].pageX) || 0;
   const y = e.pageY || (e.touches && e.touches[0].pageY) || 0;
-  createEnergyPulse(x, y);
+  createSparkleEffect(x, y);
   
-  // Create a temporary ripple effect on the cursor
+  // Create a temporary effect on the cursor
   if (!isTouchDevice) {
     cursor.style.transform = 'scale(1.5)';
-    cursor.style.boxShadow = `0 0 20px ${getComputedStyle(document.documentElement).getPropertyValue('--accent-color')}`;
+    cursor.style.boxShadow = `0 0 20px var(--accent-color)`;
     setTimeout(() => {
       cursor.style.transform = 'scale(1)';
       cursor.style.boxShadow = 'none';
@@ -920,7 +1056,7 @@ function handleInteraction(e) {
 document.addEventListener('click', handleInteraction);
 document.addEventListener('touchstart', handleInteraction);
 
-// FPS counter with cyberpunk style
+// FPS counter with cyber style
 let lastFrame = performance.now();
 let frameCount = 0;
 let fpsCounter = document.getElementById('fpsCounter');
@@ -939,11 +1075,10 @@ function updateFPS() {
     }
     
     const avgFps = Math.round(fpsHistory.reduce((a, b) => a + b, 0) / fpsHistory.length);
-    const systemStatus = fps >= 50 ? 'OPTIMAL' : fps >= 30 ? 'STABLE' : 'LAGGY';
     
-    fpsCounter.textContent = `SYSTEM STATUS: ${systemStatus} | FPS: ${fps} | AVG: ${avgFps}`;
+    fpsCounter.textContent = `FPS: ${fps} | AVG: ${avgFps}`;
     fpsCounter.style.color = fps >= 50 ? 
-      getComputedStyle(document.documentElement).getPropertyValue('--secondary-color') : 
+      getComputedStyle(document.documentElement).getPropertyValue('--accent-color') : 
       fps >= 30 ? 
       getComputedStyle(document.documentElement).getPropertyValue('--primary-color') : 
       '#ff0000';
@@ -956,7 +1091,7 @@ function updateFPS() {
 }
 updateFPS();
 
-// Music player functionality with cyberpunk style
+// Music player functionality with cyber style
 const bgMusic = document.getElementById('bgMusic');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const muteBtn = document.getElementById('muteBtn');
@@ -973,17 +1108,17 @@ playPauseBtn.addEventListener('click', () => {
     bgMusic.play()
       .then(() => {
         playPauseBtn.textContent = '❚❚';
-        musicTitle.textContent = 'SYSTEM AUDIO: ACTIVE';
-        musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+        musicTitle.textContent = 'BGM: SYSTEM ACTIVE';
+        musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--accent-color');
       })
       .catch(e => {
         console.log('Autoplay prevented, please interact to play');
-        musicTitle.textContent = 'SYSTEM AUDIO: CLICK TO ACTIVATE';
+        musicTitle.textContent = 'BGM: TAP TO ACTIVATE';
       });
   } else {
     bgMusic.pause();
     playPauseBtn.textContent = '▶';
-    musicTitle.textContent = 'SYSTEM AUDIO: STANDBY';
+    musicTitle.textContent = 'BGM: SYSTEM STANDBY';
     musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
   }
 });
@@ -993,10 +1128,10 @@ muteBtn.addEventListener('click', () => {
   bgMusic.muted = !bgMusic.muted;
   muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
   musicTitle.textContent = bgMusic.muted ? 
-    'SYSTEM AUDIO: MUTED' : 
+    'BGM: SYSTEM MUTED' : 
     bgMusic.paused ? 
-    'SYSTEM AUDIO: STANDBY' : 
-    'SYSTEM AUDIO: ACTIVE';
+    'BGM: SYSTEM STANDBY' : 
+    'BGM: SYSTEM ACTIVE';
 });
 
 // Volume slider
@@ -1009,8 +1144,8 @@ volumeSlider.addEventListener('input', () => {
   volumeSlider.style.background = `linear-gradient(to right, 
     ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} 0%, 
     ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} ${volumeSlider.value * 100}%, 
-    rgba(255, 0, 60, 0.3) ${volumeSlider.value * 100}%, 
-    rgba(255, 0, 60, 0.3) 100%)`;
+    rgba(0, 255, 157, 0.3) ${volumeSlider.value * 100}%, 
+    rgba(0, 255, 157, 0.3) 100%)`;
 });
 
 // Custom cursor for interactive elements
@@ -1020,7 +1155,7 @@ interactiveElements.forEach(el => {
     if (!isTouchDevice) {
       cursor.style.transform = 'scale(1.5)';
       cursor.style.background = `radial-gradient(circle, ${getComputedStyle(document.documentElement).getPropertyValue('--accent-color')} 0%, transparent 70%)`;
-      cursor.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color');
+      cursor.style.borderColor = 'white';
     }
   });
   
@@ -1033,30 +1168,30 @@ interactiveElements.forEach(el => {
   });
 });
 
-// Matrix effect variables
-let matrixActive = false;
-const matrixContainer = document.getElementById('matrixContainer');
-const matrixBtn = document.getElementById('matrixBtn');
-const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
-let matrixColumns = [];
-let matrixAnimationId = null;
+// Sparkle effect variables
+let sparkleActive = false;
+const sparkleContainer = document.getElementById('sparkleContainer');
+const sparkleBtn = document.getElementById('sparkleBtn');
+const sparkleChars = "01";
+let sparkleColumns = [];
+let sparkleAnimationId = null;
 
-// Create matrix columns
-function createMatrixColumns() {
-  matrixContainer.innerHTML = '';
-  matrixColumns = [];
+// Create sparkle columns
+function createSparkleColumns() {
+  sparkleContainer.innerHTML = '';
+  sparkleColumns = [];
   
-  const columnCount = Math.floor(window.innerWidth / 20);
+  const columnCount = Math.floor(window.innerWidth / 30);
   
   for (let i = 0; i < columnCount; i++) {
     const column = document.createElement('div');
-    column.className = 'matrix-column';
-    column.style.left = `${i * 20}px`;
+    column.className = 'sparkle-column';
+    column.style.left = `${i * 30}px`;
     column.style.fontSize = `${Math.random() * 10 + 12}px`;
     column.style.animationDuration = `${Math.random() * 2 + 2}s`;
-    matrixContainer.appendChild(column);
+    sparkleContainer.appendChild(column);
     
-    matrixColumns.push({
+    sparkleColumns.push({
       element: column,
       chars: [],
       speed: Math.random() * 2 + 1,
@@ -1066,15 +1201,15 @@ function createMatrixColumns() {
   }
 }
 
-// Update matrix animation
-function updateMatrix(timestamp) {
-  if (!matrixActive) return;
+// Update sparkle animation
+function updateSparkle(timestamp) {
+  if (!sparkleActive) return;
   
-  matrixColumns.forEach(column => {
+  sparkleColumns.forEach(column => {
     if (timestamp > column.nextCharTime) {
       // Add new character
       const newChar = {
-        char: chars[Math.floor(Math.random() * chars.length)],
+        char: sparkleChars[Math.floor(Math.random() * sparkleChars.length)],
         opacity: 1,
         y: 0
       };
@@ -1090,7 +1225,7 @@ function updateMatrix(timestamp) {
       column.chars.forEach((char, index) => {
         char.y += column.speed;
         char.opacity = index / column.chars.length;
-        columnText += `<span style="opacity:${char.opacity}">${char.char}</span>`;
+        columnText += `<span style="opacity:${char.opacity}; color:${index % 2 === 0 ? 'var(--primary-color)' : 'var(--accent-color)'}">${char.char}</span>`;
       });
       
       column.element.innerHTML = columnText;
@@ -1098,40 +1233,41 @@ function updateMatrix(timestamp) {
     }
   });
   
-  matrixAnimationId = requestAnimationFrame(updateMatrix);
+  sparkleAnimationId = requestAnimationFrame(updateSparkle);
 }
 
-// Toggle matrix effect
-function toggleMatrix() {
-  matrixActive = !matrixActive;
+// Toggle sparkle effect
+function toggleSparkle() {
+  sparkleActive = !sparkleActive;
   
-  if (matrixActive) {
-    matrixContainer.classList.add('active');
-    createMatrixColumns();
-    matrixAnimationId = requestAnimationFrame(updateMatrix);
-    matrixBtn.classList.add('active');
-    matrixBtn.textContent = 'MATRIX ACTIVE';
+  if (sparkleActive) {
+    sparkleContainer.classList.add('active');
+    createSparkleColumns();
+    sparkleAnimationId = requestAnimationFrame(updateSparkle);
+    sparkleBtn.classList.add('active');
+    sparkleBtn.textContent = 'NEON MODE ACTIVE';
   } else {
-    matrixContainer.classList.remove('active');
-    if (matrixAnimationId) {
-      cancelAnimationFrame(matrixAnimationId);
+    sparkleContainer.classList.remove('active');
+    if (sparkleAnimationId) {
+      cancelAnimationFrame(sparkleAnimationId);
     }
-    matrixBtn.classList.remove('active');
-    matrixBtn.textContent = 'ACTIVATE MATRIX';
+    sparkleBtn.classList.remove('active');
+    sparkleBtn.textContent = 'ACTIVATE NEON MODE';
   }
 }
 
-// Start experience function with cyberpunk effects
+// Start experience function with cyber effects
 function startExperience() {
-  // Add glitch effect to start screen
+  // Add sparkle effect to start screen
   const startScreen = document.getElementById('startScreen');
   startScreen.style.animation = 'none';
   void startScreen.offsetWidth; // Trigger reflow
   startScreen.style.animation = 'fadeIn 0.25s ease';
   
-  // Create particles and rain
-  createParticles();
+  // Create binary code and rain
+  createBinaryCode();
   createCyberRain();
+  createFloatingHexagons();
   
   // Add transition effect
   setTimeout(() => {
@@ -1145,11 +1281,11 @@ function startExperience() {
       // Start music automatically
       bgMusic.play().catch(e => {
         console.log('Autoplay prevented, please interact to play');
-        musicTitle.textContent = 'SYSTEM AUDIO: CLICK TO ACTIVATE';
+        musicTitle.textContent = 'BGM: TAP TO ACTIVATE';
       });
       playPauseBtn.textContent = '❚❚';
-      musicTitle.textContent = 'SYSTEM AUDIO: ACTIVE';
-      musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+      musicTitle.textContent = 'BGM: SYSTEM ACTIVE';
+      musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--accent-color');
       
       mainCard.focus();
       
@@ -1161,8 +1297,8 @@ function startExperience() {
   }, 250);
 }
 
-// Matrix button event listener
-matrixBtn.addEventListener('click', toggleMatrix);
+// Sparkle button event listener
+sparkleBtn.addEventListener('click', toggleSparkle);
 
 // Start event listeners
 window.addEventListener('keydown', e => {
@@ -1189,15 +1325,17 @@ document.addEventListener('touchend', function(event) {
 
 // Window resize handler
 window.addEventListener('resize', () => {
-  createParticles();
+  createBinaryCode();
   createCyberRain();
-  if (matrixActive) {
-    createMatrixColumns();
+  createFloatingHexagons();
+  if (sparkleActive) {
+    createSparkleColumns();
   }
 });
 
-// Initialize with particles even before start
-createParticles();
+// Initialize with effects even before start
+createBinaryCode();
+createFloatingHexagons();
 </script>
 
 </body>
