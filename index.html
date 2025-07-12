@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CYBER ANIME TERMINAL</title>
+<title>⚔️ SHOGUN TERMINAL ⚔️</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&family=Share+Tech+Mono&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
 
   :root {
-    --primary-color: #00ff9d;  /* Neon Green */
-    --secondary-color: #ff00aa; /* Neon Pink */
-    --accent-color: #00b8ff;   /* Neon Blue */
-    --dark-bg: #0a0a12;
-    --darker-bg: #050508;
-    --text-glow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
+    --primary-color: #ff0000;
+    --secondary-color: #ff4d4d;
+    --accent-color: #cc0000;
+    --dark-bg: #110000;
+    --darker-bg: #080000;
+    --text-glow: 0 0 5px #ff0000, 0 0 10px #ff0000;
     --neon-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
-    --scanline-color: rgba(0, 255, 157, 0.05);
-    --terminal-bg: rgba(10, 10, 18, 0.85);
-    --grid-line: 1px solid rgba(0, 255, 157, 0.15);
-    --terminal-border: 2px solid var(--primary-color);
+    --scanline-color: rgba(255, 0, 0, 0.05);
+    --terminal-bg: rgba(17, 0, 0, 0.95);
+    --grid-line: 1px solid rgba(255, 0, 0, 0.1);
+    --text-color: #ffffff;
   }
 
   * {
@@ -32,11 +33,11 @@
     height: 100vh;
     width: 100vw;
     background: 
-      radial-gradient(circle at center, rgba(0, 255, 157, 0.05) 0%, transparent 70%),
+      radial-gradient(circle at center, rgba(255, 0, 0, 0.1) 0%, transparent 70%),
       linear-gradient(to bottom, var(--darker-bg) 0%, var(--dark-bg) 100%);
     overflow: hidden;
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--primary-color);
+    font-family: 'DotGothic16', sans-serif;
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -45,7 +46,50 @@
     position: relative;
   }
 
-  /* Cyber grid background */
+  /* === BACKGROUND EFFECTS === */
+  .japanese-text-flow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2;
+    overflow: hidden;
+  }
+
+  .flowing-text {
+    position: absolute;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: rgba(255, 0, 0, 0.08);
+    font-size: 1.5rem;
+    white-space: nowrap;
+    animation: flowText linear infinite;
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+    user-select: none;
+    font-weight: 900;
+  }
+
+  @keyframes flowText {
+    0% { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .blood-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle, rgba(255, 0, 0, 0.03) 1px, transparent 1px),
+      radial-gradient(circle, rgba(204, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 100px 100px;
+    background-position: 0 0, 50px 50px;
+    z-index: -1;
+    opacity: 0.4;
+  }
+
   .grid-overlay {
     position: fixed;
     top: 0;
@@ -57,10 +101,9 @@
       linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 40px 40px;
     z-index: -1;
-    opacity: 0.5;
+    opacity: 0.3;
   }
 
-  /* Scanline effect */
   .scanlines {
     position: fixed;
     top: 0;
@@ -76,7 +119,7 @@
     background-size: 100% 4px;
     z-index: 0;
     pointer-events: none;
-    animation: scanline 8s linear infinite;
+    animation: scanline 6s linear infinite;
   }
 
   @keyframes scanline {
@@ -84,130 +127,96 @@
     100% { background-position: 0 100%; }
   }
 
-  /* Cyber cursor */
+  /* === CURSOR === */
   .custom-cursor {
-    width: 24px;
-    height: 24px;
-    background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
-    border: 1px solid var(--primary-color);
-    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ff0000" d="M95,50 L70,45 L50,5 L30,45 L5,50 L30,55 L50,95 L70,55 Z"/></svg>') no-repeat center center/contain;
     position: absolute;
     pointer-events: none;
     z-index: 9999;
     transition: 
       transform 0.1s ease,
-      width 0.2s ease,
-      height 0.2s ease;
-    filter: drop-shadow(0 0 5px var(--primary-color));
+      filter 0.2s ease;
+    filter: drop-shadow(0 0 8px var(--primary-color)) brightness(1.5);
     display: block;
     mix-blend-mode: screen;
+    transform-origin: center;
   }
 
-  .custom-cursor::before {
-    content: '◉';
-    position: absolute;
-    font-size: 8px;
-    color: var(--accent-color);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulse 1.5s infinite;
-  }
-
-  @keyframes pulse {
-    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.5; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-  }
-
-  /* Start screen with cyber style */
+  /* === START SCREEN === */
   .start-screen {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: rgba(5, 5, 8, 0.98);
+    background: radial-gradient(ellipse at center, var(--dark-bg) 0%, var(--darker-bg) 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     z-index: 10000;
-    animation: fadeIn 0.5s ease;
+    animation: fadeIn 1s ease;
     top: 0;
     left: 0;
+    border: 4px solid var(--primary-color);
+    box-shadow: 0 0 40px var(--primary-color), inset 0 0 30px var(--primary-color);
   }
 
   .start-text {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
-    color: var(--primary-color);
-    text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
-    animation: float 3s ease-in-out infinite, textGlow 2s ease-in-out infinite alternate;
+    font-size: clamp(1.8rem, 6vw, 3rem);
+    color: var(--text-color);
+    text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
+    animation: float 3s ease-in-out infinite;
     text-align: center;
     position: relative;
     padding: 0 20px;
     font-weight: 700;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     font-family: 'Press Start 2P', cursive;
-  }
-
-  @keyframes textGlow {
-    0% { text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color); }
-    100% { text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color), 0 0 45px var(--secondary-color); }
+    background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 30px;
   }
 
   .start-subtext {
-    font-size: clamp(0.8rem, 3vw, 1.2rem);
-    color: var(--accent-color);
-    margin-top: 20px;
+    font-size: clamp(1rem, 3.5vw, 1.5rem);
+    color: var(--secondary-color);
+    margin-top: 15px;
     text-align: center;
-    opacity: 0.8;
+    opacity: 0.9;
     animation: fadeInOut 4s infinite;
-    text-shadow: 0 0 5px var(--accent-color);
+    text-shadow: 0 0 8px var(--secondary-color);
+    letter-spacing: 2px;
+    max-width: 80%;
+    line-height: 1.5;
   }
 
   @keyframes fadeInOut {
-    0% { opacity: 0.5; }
+    0% { opacity: 0.7; }
     50% { opacity: 1; }
-    100% { opacity: 0.5; }
+    100% { opacity: 0.7; }
   }
 
-  /* Cyber sparkle effect */
-  .sparkle {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    filter: blur(1px);
-    animation: sparkle 2s infinite;
-  }
-
-  @keyframes sparkle {
-    0% { transform: scale(0.5); opacity: 0; }
-    50% { transform: scale(1.5); opacity: 1; }
-    100% { transform: scale(0.5); opacity: 0; }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  /* Main card with cyber terminal style */
+  /* === MAIN CARD === */
   .card {
     background: var(--terminal-bg);
-    border: var(--terminal-border);
-    border-radius: 5px;
-    padding: clamp(20px, 5vw, 35px);
-    box-shadow: 0 0 20px var(--primary-color), 0 0 40px rgba(0, 255, 157, 0.3);
+    border: 3px solid var(--primary-color);
+    border-radius: 0;
+    padding: clamp(25px, 6vw, 40px);
+    box-shadow: 0 0 40px var(--primary-color), inset 0 0 15px var(--primary-color);
     text-align: center;
     z-index: 2;
     display: none;
-    width: 95%;
-    max-width: 600px;
+    width: 96%;
+    max-width: 650px;
     position: relative;
     margin: 20px;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
     overflow: hidden;
+    font-family: 'DotGothic16', sans-serif;
+    transform-style: preserve-3d;
+    perspective: 1000px;
   }
 
   .card::before {
@@ -220,11 +229,11 @@
     background: linear-gradient(
       to bottom right,
       transparent 45%,
-      var(--primary-color) 50%,
+      var(--secondary-color) 50%,
       transparent 55%
     );
-    opacity: 0.1;
-    animation: shine 6s linear infinite;
+    opacity: 0.15;
+    animation: shine 8s linear infinite;
   }
 
   @keyframes shine {
@@ -233,53 +242,78 @@
   }
 
   .card h1 {
-    font-size: clamp(1.5rem, 5vw, 2.2rem);
-    margin-bottom: 20px;
-    color: var(--primary-color);
-    text-shadow: 0 0 10px var(--primary-color);
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+    margin-bottom: 25px;
+    color: var(--text-color);
+    text-shadow: 0 0 15px var(--primary-color);
     position: relative;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     font-family: 'Press Start 2P', cursive;
+    transform: translateZ(30px);
   }
 
   .card h1::after {
     content: '';
     display: block;
-    width: 50%;
-    height: 2px;
-    background: linear-gradient(to right, transparent, var(--primary-color), transparent);
-    margin: 10px auto;
-    opacity: 0.7;
+    width: 60%;
+    height: 4px;
+    background: linear-gradient(to right, transparent, var(--secondary-color), transparent);
+    margin: 15px auto;
+    opacity: 0.8;
+  }
+
+  /* === PROFILE PHOTO === */
+  .photo-container {
+    position: relative;
+    width: clamp(140px, 35vw, 200px);
+    height: clamp(140px, 35vw, 200px);
+    margin: 0 auto 30px;
+    transform-style: preserve-3d;
+    perspective: 1000px;
   }
 
   .photo {
-    width: clamp(120px, 30vw, 180px);
-    height: clamp(120px, 30vw, 180px);
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-    margin: 0 auto 20px;
-    background: url('https://i.imgur.com/JYj7ZzX.png') no-repeat center center/cover;
-    box-shadow: 0 0 20px var(--primary-color);
-    border: 2px solid var(--primary-color);
+    background: url('https://i.imgur.com/JYw7F4A.png') no-repeat center center/cover;
+    box-shadow: 0 0 25px var(--primary-color), inset 0 0 15px var(--primary-color);
+    border: 4px solid var(--primary-color);
     position: relative;
-    transition: transform 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: translateZ(20px);
   }
 
   .photo:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px var(--accent-color);
+    transform: translateZ(20px) scale(1.08);
+    box-shadow: 0 0 40px var(--accent-color), inset 0 0 20px var(--accent-color);
   }
 
   .photo::before {
     content: '';
     position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border: 3px dashed var(--secondary-color);
     border-radius: 50%;
-    border: 2px dashed var(--accent-color);
-    animation: rotate 10s linear infinite;
-    opacity: 0.7;
+    animation: rotate 15s linear infinite;
+    opacity: 0.8;
+    z-index: -1;
+  }
+
+  .photo::after {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    right: -12px;
+    bottom: -12px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: rotateReverse 20s linear infinite;
+    z-index: -2;
   }
 
   @keyframes rotate {
@@ -287,11 +321,17 @@
     100% { transform: rotate(360deg); }
   }
 
+  @keyframes rotateReverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+
+  /* === SOCIAL ICONS === */
   .social-icons {
-    margin-top: 25px;
+    margin-top: 30px;
     display: flex;
     justify-content: center;
-    gap: clamp(15px, 5vw, 30px);
+    gap: clamp(20px, 6vw, 35px);
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -300,172 +340,178 @@
 
   .social-icons a {
     cursor: none;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: clamp(50px, 10vw, 65px);
+    height: clamp(50px, 10vw, 65px);
+    border-radius: 50%;
+    background: rgba(255, 0, 0, 0.25);
+    transform: translateZ(15px);
   }
 
   .social-icons a::before {
     content: '';
     position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    border: 1px solid var(--accent-color);
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border: 2px solid var(--secondary-color);
     border-radius: 50%;
     opacity: 0;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+    box-shadow: 0 0 15px var(--secondary-color);
+  }
+
+  .social-icons a:hover {
+    transform: translateZ(15px) scale(1.15);
+    background: rgba(255, 0, 0, 0.4);
   }
 
   .social-icons a:hover::before {
     opacity: 1;
-    transform: scale(1.2);
+    transform: scale(1.1);
   }
 
   .social-icons a img {
-    width: clamp(40px, 8vw, 55px);
-    height: clamp(40px, 8vw, 55px);
-    filter: drop-shadow(0 0 5px var(--primary-color)) brightness(1.2);
+    width: 60%;
+    height: 60%;
+    filter: drop-shadow(0 0 8px var(--primary-color));
     transition: all 0.3s ease;
   }
 
   .social-icons a:hover img {
-    transform: scale(1.2);
-    filter: drop-shadow(0 0 10px var(--accent-color)) brightness(1.5);
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 15px var(--secondary-color)) brightness(1.2);
   }
 
-  /* FPS counter with cyber style */
+  /* === FPS COUNTER === */
   .fps {
     position: fixed;
-    top: 10px;
-    left: 10px;
-    background: rgba(0, 0, 0, 0.7);
-    color: var(--primary-color);
-    padding: 5px 10px;
-    border-radius: 3px;
-    font-size: 0.8rem;
+    top: 15px;
+    left: 15px;
+    background: rgba(17, 0, 0, 0.8);
+    color: var(--secondary-color);
+    padding: 8px 15px;
+    border-radius: 0;
+    font-size: 0.9rem;
     z-index: 1000;
-    box-shadow: 0 0 5px var(--primary-color);
+    box-shadow: 0 0 8px var(--secondary-color);
     font-family: 'Press Start 2P', cursive;
-    border: 1px solid var(--primary-color);
+    border: 2px solid var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
   }
 
-  /* Music player with cyber style */
+  /* === MUSIC PLAYER === */
   .music-player {
     position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid var(--primary-color);
-    border-radius: 5px;
-    padding: 10px 15px;
-    box-shadow: 0 0 10px var(--primary-color);
+    bottom: 25px;
+    left: 25px;
+    background: rgba(17, 0, 0, 0.8);
+    border: 2px solid var(--primary-color);
+    border-radius: 0;
+    padding: 12px 18px;
+    box-shadow: 0 0 15px var(--primary-color);
     z-index: 1000;
     display: flex;
     align-items: center;
-    gap: 12px;
-    backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
+    gap: 15px;
+    backdrop-filter: blur(8px);
+    transition: all 0.4s ease;
     font-family: 'Press Start 2P', cursive;
   }
 
   .music-player:hover {
-    box-shadow: 0 0 15px var(--accent-color);
-    border-color: var(--accent-color);
+    box-shadow: 0 0 25px var(--accent-color);
+    border-color: var(--secondary-color);
+    transform: translateY(-3px);
   }
 
   .music-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
 
   .music-btn {
     background: none;
     border: none;
     color: var(--primary-color);
-    font-size: 18px;
+    font-size: 20px;
     cursor: none;
-    text-shadow: 0 0 5px var(--primary-color);
-    transition: all 0.2s ease;
-    padding: 5px;
-    border-radius: 3px;
-    width: 30px;
-    height: 30px;
+    text-shadow: 0 0 8px var(--primary-color);
+    transition: all 0.3s ease;
+    padding: 6px;
+    border-radius: 0;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
   }
 
-  .music-btn::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: var(--primary-color);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-  }
-
   .music-btn:hover {
-    color: var(--accent-color);
-    text-shadow: 0 0 10px var(--accent-color);
-  }
-
-  .music-btn:hover::after {
-    transform: scaleX(1);
+    color: var(--secondary-color);
+    text-shadow: 0 0 15px var(--secondary-color);
+    transform: scale(1.1);
   }
 
   .volume-control {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
   }
 
   .volume-slider {
-    width: 80px;
+    width: 90px;
     -webkit-appearance: none;
-    height: 3px;
-    background: rgba(0, 255, 157, 0.3);
-    border-radius: 5px;
+    height: 6px;
+    background: rgba(255, 0, 0, 0.3);
+    border-radius: 0;
     outline: none;
     cursor: none;
+    transition: all 0.3s ease;
+  }
+
+  .volume-slider:hover {
+    background: rgba(255, 0, 0, 0.4);
   }
 
   .volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 12px;
-    height: 12px;
+    width: 18px;
+    height: 18px;
     background: var(--primary-color);
     border-radius: 50%;
     cursor: none;
-    box-shadow: 0 0 5px var(--primary-color);
+    box-shadow: 0 0 8px var(--primary-color);
     transition: all 0.2s ease;
-    border: 1px solid black;
+    border: 2px solid var(--text-color);
   }
 
   .volume-slider::-webkit-slider-thumb:hover {
-    background: var(--accent-color);
+    background: var(--secondary-color);
     transform: scale(1.2);
+    box-shadow: 0 0 12px var(--secondary-color);
   }
 
   .music-title {
-    font-size: 12px;
-    color: var(--primary-color);
-    text-shadow: 0 0 5px var(--primary-color);
+    font-size: 14px;
+    color: var(--secondary-color);
+    text-shadow: 0 0 8px var(--secondary-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 150px;
-    letter-spacing: 0.5px;
+    max-width: 180px;
+    letter-spacing: 1px;
   }
 
-  /* Floating binary code */
-  .binary-code {
+  /* === BLOOD DROPS === */
+  .blood-drops {
     position: fixed;
     top: 0;
     left: 0;
@@ -475,30 +521,33 @@
     z-index: -1;
   }
 
-  .binary-digit {
+  .blood-drop {
     position: absolute;
-    color: rgba(0, 255, 157, 0.3);
-    font-family: 'Share Tech Mono', monospace;
-    animation: float-down linear infinite;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ff0000" d="M50 0Q60 30 70 50Q80 70 50 100Q20 70 30 50Q40 30 50 0Z"/></svg>') no-repeat center center/contain;
+    animation: float-blood linear infinite;
+    filter: drop-shadow(0 0 3px var(--primary-color));
+    opacity: 0.8;
   }
 
-  @keyframes float-down {
-    0% { transform: translateY(-100px); opacity: 0; }
-    10% { opacity: 0.5; }
-    90% { opacity: 0.5; }
-    100% { transform: translateY(100vh); opacity: 0; }
+  @keyframes float-blood {
+    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(-100vh) translateX(20px) rotate(360deg); opacity: 0; }
   }
 
-  /* Blinking cursor */
+  /* === BLINKING CURSOR === */
   .blinking-cursor {
     display: inline-block;
-    width: 8px;
-    height: 16px;
+    width: 12px;
+    height: 24px;
     background: var(--primary-color);
-    margin-left: 5px;
-    animation: blink 1s infinite;
+    margin-left: 8px;
+    animation: blink 1s infinite steps(1);
     vertical-align: middle;
-    box-shadow: 0 0 5px var(--primary-color);
+    border-radius: 0;
+    box-shadow: 0 0 8px var(--primary-color);
+    transform: translateY(3px);
   }
 
   @keyframes blink {
@@ -506,8 +555,93 @@
     50% { opacity: 0; }
   }
 
-  /* Cyber sparkle effect */
-  .sparkle-container {
+  /* === SAMURAI BUTTON === */
+  .samurai-button {
+    position: relative;
+    background: transparent;
+    border: 3px solid var(--primary-color);
+    color: var(--text-color);
+    padding: 15px 30px;
+    font-family: 'Press Start 2P', cursive;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    cursor: none;
+    overflow: hidden;
+    margin-top: 30px;
+    text-shadow: 0 0 8px var(--primary-color);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 0;
+    box-shadow: 0 0 15px var(--primary-color), inset 0 0 8px var(--primary-color);
+    transform: translateZ(20px);
+  }
+
+  .samurai-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.4), transparent);
+    transition: all 0.6s ease;
+  }
+
+  .samurai-button:hover::before {
+    left: 100%;
+  }
+
+  .samurai-button:hover {
+    color: var(--secondary-color);
+    text-shadow: 0 0 15px var(--secondary-color);
+    box-shadow: 0 0 30px var(--accent-color), inset 0 0 15px var(--accent-color);
+    border-color: var(--secondary-color);
+    transform: translateZ(20px) translateY(-3px);
+  }
+
+  .samurai-button:active {
+    transform: translateZ(20px) translateY(1px);
+  }
+
+  .samurai-button.active {
+    color: var(--secondary-color);
+    box-shadow: 0 0 25px var(--secondary-color), inset 0 0 10px var(--secondary-color);
+    border-color: var(--secondary-color);
+    animation: pulseGlow 2s infinite;
+  }
+
+  .samurai-button.active::after {
+    content: '⚔';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 25px var(--secondary-color), inset 0 0 10px var(--secondary-color); }
+    50% { box-shadow: 0 0 40px var(--secondary-color), inset 0 0 15px var(--secondary-color); }
+  }
+
+  /* === KATANA DECORATION === */
+  .katana {
+    position: absolute;
+    width: 120px;
+    height: 350px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 350"><rect x="50" y="0" width="20" height="350" fill="%23ff0000"/><rect x="45" y="320" width="30" height="30" fill="%23cc0000"/></svg>') no-repeat center center/contain;
+    pointer-events: none;
+    z-index: -1;
+    filter: drop-shadow(0 0 8px var(--primary-color));
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* === BATTLE MODE EFFECTS === */
+  .battle-mode-effects {
     position: fixed;
     top: 0;
     left: 0;
@@ -516,50 +650,95 @@
     pointer-events: none;
     z-index: -1;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.8s ease;
   }
 
-  .sparkle-container.active {
-    opacity: 0.7;
+  .battle-mode-effects.active {
+    opacity: 1;
   }
 
-  .sparkle-column {
+  .battle-scanline {
     position: absolute;
-    top: 0;
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--accent-color);
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    text-shadow: 0 0 5px var(--accent-color);
-  }
-
-  /* Cyber rain effect */
-  .cyber-rain {
-    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    z-index: -1;
-    overflow: hidden;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(255, 0, 0, 0.15) 2px,
+      transparent 4px
+    );
+    background-size: 100% 8px;
+    animation: battleScanline 0.3s linear infinite;
   }
 
-  .cyber-drop {
+  @keyframes battleScanline {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 16px; }
+  }
+
+  .battle-pulse {
     position: absolute;
-    width: 1px;
-    background: linear-gradient(to bottom, transparent, var(--primary-color));
-    animation: cyber-fall linear infinite;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 0%, rgba(255, 0, 0, 0.1) 100%);
+    animation: battlePulse 1.5s infinite;
   }
 
-  @keyframes cyber-fall {
-    0% { transform: translateY(-100px); opacity: 0; }
-    10% { opacity: 0.7; }
-    90% { opacity: 0.7; }
-    100% { transform: translateY(100vh); opacity: 0; }
+  @keyframes battlePulse {
+    0% { transform: scale(1); opacity: 0; }
+    50% { opacity: 0.4; }
+    100% { transform: scale(1.5); opacity: 0; }
   }
 
-  /* Mobile-specific adjustments */
+  .battle-glitch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="transparent"/><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,0,0,0.1)" stroke-width="1"/></pattern><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+    animation: glitch 0.5s infinite steps(1);
+    opacity: 0.3;
+  }
+
+  @keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+  }
+
+  /* === TERMINAL TEXT === */
+  .terminal-text {
+    text-align: left;
+    margin: 25px auto;
+    max-width: 85%;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+    border-left: 3px solid var(--primary-color);
+    padding-left: 20px;
+    transform: translateZ(15px);
+  }
+
+  .terminal-text span {
+    display: inline-block;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  /* === MOBILE ADJUSTMENTS === */
   @media (hover: none) {
     .custom-cursor {
       display: none;
@@ -567,200 +746,35 @@
     body {
       cursor: default;
     }
-    .social-icons a img {
-      transform: scale(1.1);
+    .social-icons a {
+      transform: translateZ(15px) scale(1.1);
     }
     .music-player {
-      padding: 8px 12px;
-      bottom: 15px;
-      left: 15px;
+      padding: 10px 15px;
+      bottom: 20px;
+      left: 20px;
     }
     .music-btn {
-      font-size: 20px;
+      font-size: 22px;
     }
   }
 
-  /* Orientation-specific adjustments */
   @media (orientation: portrait) {
     .card {
-      max-width: 90%;
+      max-width: 92%;
+      padding: 20px;
     }
     .social-icons {
-      gap: 20px;
+      gap: 15px;
     }
     .music-player {
       flex-direction: column;
       align-items: flex-start;
+      width: auto;
     }
-  }
-
-  /* Cyber button style */
-  .cyber-button {
-    position: relative;
-    background: transparent;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
-    padding: 12px 24px;
-    font-family: 'Share Tech Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    cursor: none;
-    overflow: hidden;
-    margin-top: 20px;
-    text-shadow: 0 0 5px var(--primary-color);
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px var(--primary-color), inset 0 0 10px var(--primary-color);
-  }
-
-  .cyber-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 255, 157, 0.3), transparent);
-    transition: all 0.5s ease;
-  }
-
-  .cyber-button:hover::before {
-    left: 100%;
-  }
-
-  .cyber-button:hover {
-    color: var(--accent-color);
-    text-shadow: 0 0 10px var(--accent-color);
-    box-shadow: 0 0 20px var(--primary-color), inset 0 0 20px var(--primary-color);
-    border-color: var(--accent-color);
-  }
-
-  .cyber-button:active {
-    transform: translateY(1px);
-    box-shadow: 0 0 5px var(--primary-color), inset 0 0 5px var(--primary-color);
-  }
-
-  .cyber-button.active {
-    color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-color), inset 0 0 15px var(--accent-color);
-    border-color: var(--accent-color);
-  }
-
-  .cyber-button.active::after {
-    content: '◈';
-    position: absolute;
-    right: -15px;
-    top: 50%;
-    transform: translateY(-50%);
-    animation: pulse 1.5s infinite;
-  }
-
-  /* Terminal decoration */
-  .terminal-decoration {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  /* Floating hexagons */
-  .hexagon-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .hexagon {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%2300ff9d" fill-opacity="0.1" d="M50 0L100 25V75L50 100L0 75V25Z"/></svg>') no-repeat center center/contain;
-    animation: float-hexagon linear infinite;
-    opacity: 0;
-  }
-
-  @keyframes float-hexagon {
-    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
-    10% { opacity: 0.3; }
-    90% { opacity: 0.3; }
-    100% { transform: translateY(-100vh) translateX(20px) rotate(360deg); opacity: 0; }
-  }
-
-  /* Terminal input effect */
-  .terminal-input {
-    position: relative;
-    margin-top: 20px;
-  }
-
-  .terminal-input::before {
-    content: '>';
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--primary-color);
-    text-shadow: 0 0 5px var(--primary-color);
-  }
-
-  .terminal-input input {
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
-    padding: 10px 10px 10px 30px;
-    width: 100%;
-    font-family: 'Share Tech Mono', monospace;
-    box-shadow: 0 0 10px var(--primary-color);
-  }
-
-  .terminal-input input:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-color);
-  }
-
-  /* Status bars */
-  .status-bars {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-  }
-
-  .status-bar {
-    flex: 1;
-    height: 10px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--primary-color);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .status-bar::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-    animation: status-animation 3s infinite alternate;
-  }
-
-  @keyframes status-animation {
-    0% { width: 30%; }
-    100% { width: 100%; }
-  }
-
-  .status-bar:nth-child(1)::after {
-    animation-delay: 0s;
-  }
-  .status-bar:nth-child(2)::after {
-    animation-delay: 0.5s;
-  }
-  .status-bar:nth-child(3)::after {
-    animation-delay: 1s;
+    .start-text {
+      font-size: clamp(1.5rem, 7vw, 2.5rem);
+    }
   }
 </style>
 </head>
@@ -768,37 +782,55 @@
 
 <audio id="bgMusic" loop>
   <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
 </audio>
 
+<audio id="battleMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+</audio>
+
+<div class="japanese-text-flow" id="japaneseTextFlow"></div>
+<div class="blood-overlay"></div>
 <div class="grid-overlay"></div>
 <div class="scanlines"></div>
-<div class="binary-code" id="binaryCode"></div>
-<div class="cyber-rain" id="cyberRain"></div>
-<div class="sparkle-container" id="sparkleContainer"></div>
-<div class="hexagon-container" id="hexagonContainer"></div>
+<div class="blood-drops" id="bloodDrops"></div>
+<div class="battle-mode-effects" id="battleModeEffects">
+  <div class="battle-scanline"></div>
+  <div class="battle-pulse" style="animation-delay: 0.3s;"></div>
+  <div class="battle-glitch"></div>
+</div>
 
-<!-- Terminal decorations -->
-<div class="terminal-decoration" style="bottom: 20px; right: 20px; background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><path fill=\"%2300ff9d\" fill-opacity=\"0.3\" d=\"M50 0L100 25V75L50 100L0 75V25Z\"/></svg>') no-repeat center center/contain;"></div>
-<div class="terminal-decoration" style="top: 20px; left: 20px; background: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"%2300b8ff\" fill-opacity=\"0.2\" /></svg>') no-repeat center center/contain;"></div>
+<!-- Katana decorations -->
+<div class="katana" style="top: 12%; left: 8%; transform: rotate(15deg);"></div>
+<div class="katana" style="bottom: 12%; right: 8%; transform: rotate(-15deg);"></div>
 
 <div class="custom-cursor" id="cursor"></div>
 <div class="fps" id="fpsCounter">FPS: --</div>
 
 <div class="start-screen" id="startScreen">
-  <div class="start-text">CYBER ANIME TERMINAL</div>
-  <div class="start-subtext">[ システム起動中 ]</div>
-  <div class="start-subtext">PRESS ENTER OR TAP TO INITIALIZE</div>
+  <div class="kanji" style="top: 22%; left: 22%;">武</div>
+  <div class="kanji" style="bottom: 22%; right: 22%;">道</div>
   
-  <!-- Add sparkles to start screen -->
-  <div class="sparkle" style="top: 30%; left: 30%; background: var(--primary-color);"></div>
-  <div class="sparkle" style="top: 70%; left: 70%; animation-delay: 0.5s; background: var(--accent-color);"></div>
-  <div class="sparkle" style="top: 40%; left: 80%; animation-delay: 1s; background: var(--secondary-color);"></div>
-  <div class="sparkle" style="top: 60%; left: 20%; animation-delay: 1.5s; background: var(--primary-color);"></div>
+  <div class="start-text">SHOGUN TERMINAL</div>
+  <div class="start-subtext">[ THE WAY OF THE WARRIOR ]</div>
+  <div class="start-subtext">PRESS ENTER OR TAP TO BEGIN</div>
+  
+  <!-- Blood splatter effects -->
+  <div class="blood-drop" style="
+    width: 80px; height: 80px;
+    top: 30%; left: 25%;
+    animation: float-blood 15s linear infinite;
+    animation-delay: 2s;
+  "></div>
+  <div class="blood-drop" style="
+    width: 60px; height: 60px;
+    top: 70%; left: 75%;
+    animation: float-blood 18s linear infinite;
+    animation-delay: 5s;
+  "></div>
 </div>
 
 <div class="music-player" id="musicPlayer">
-  <div class="music-title" id="musicTitle">BGM: SYSTEM BOOT</div>
+  <div class="music-title" id="musicTitle">BGM: Standby</div>
   <div class="music-controls">
     <button class="music-btn" id="playPauseBtn">▶</button>
     <div class="volume-control">
@@ -809,11 +841,14 @@
 </div>
 
 <div class="card" id="mainCard" tabindex="0">
-  <h1>CYBER ANIME TERMINAL<span class="blinking-cursor"></span></h1>
-  <div class="photo"></div>
-  <p style="color: var(--accent-color); margin-bottom: 20px; text-shadow: 0 0 5px var(--accent-color);">
-    [ USER PROFILE LOADED ]
-  </p>
+  <h1>WARRIOR STATUS<span class="blinking-cursor"></span></h1>
+  
+  <div class="photo-container">
+    <div class="photo"></div>
+  </div>
+  
+  <div class="terminal-text" id="terminalText"></div>
+  
   <div class="social-icons">
     <a href="https://discord.com/channels/1161803566265143306" target="_blank" rel="noopener noreferrer">
       <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord">
@@ -828,19 +863,12 @@
       <img src="https://ik.imagekit.io/Saber/AniList_logo.svg.png?updatedAt=1752240661687" alt="Anilist">
     </a>
   </div>
-  <div class="terminal-input">
-    <input type="text" placeholder="ENTER COMMAND...">
-  </div>
-  <div class="status-bars">
-    <div class="status-bar"></div>
-    <div class="status-bar"></div>
-    <div class="status-bar"></div>
-  </div>
-  <button class="cyber-button" id="sparkleBtn">ACTIVATE NEON MODE</button>
+  
+  <button class="samurai-button" id="battleModeBtn">⚔ ENGAGE BATTLE MODE ⚔</button>
 </div>
 
 <script>
-// Cyber cursor with trail effect
+// ========== CURSOR ==========
 const cursor = document.getElementById('cursor');
 let cursorX = 0;
 let cursorY = 0;
@@ -851,8 +879,8 @@ for (let i = 0; i < 5; i++) {
   const trail = document.createElement('div');
   trail.className = 'custom-cursor';
   trail.style.position = 'fixed';
-  trail.style.width = `${24 - i * 4}px`;
-  trail.style.height = `${24 - i * 4}px`;
+  trail.style.width = `${40 - i * 6}px`;
+  trail.style.height = `${40 - i * 6}px`;
   trail.style.opacity = 1 - i * 0.2;
   trail.style.zIndex = '9998';
   trail.style.pointerEvents = 'none';
@@ -876,152 +904,145 @@ if (isTouchDevice) {
   document.body.style.cursor = 'default';
 }
 
-// Mouse move handler with trail effect
+// Mouse move handler
 document.addEventListener('mousemove', e => {
   if (!isTouchDevice) {
     cursorX = e.pageX;
     cursorY = e.pageY;
-    cursor.style.left = `${cursorX - 12}px`;
-    cursor.style.top = `${cursorY - 12}px`;
+    cursor.style.left = `${cursorX - 20}px`;
+    cursor.style.top = `${cursorY - 20}px`;
+    
+    // Add rotation effect based on movement speed
+    const rotation = e.movementX * 3;
+    cursor.style.transform = `rotate(${rotation}deg)`;
     
     // Update trail positions with delay
     cursorTrail.forEach((trail, index) => {
       setTimeout(() => {
-        trail.x = cursorX - (12 - index * 2);
-        trail.y = cursorY - (12 - index * 2);
+        trail.x = cursorX - (20 - index * 4);
+        trail.y = cursorY - (20 - index * 4);
         trail.element.style.left = `${trail.x}px`;
         trail.element.style.top = `${trail.y}px`;
+        trail.element.style.transform = `rotate(${rotation * (1 - index * 0.2)}deg)`;
       }, trail.delay);
     });
   }
 });
 
-// Create binary code rain
-function createBinaryCode() {
-  const binaryContainer = document.getElementById('binaryCode');
-  binaryContainer.innerHTML = '';
+// ========== BACKGROUND EFFECTS ==========
+// Create flowing Japanese text
+function createFlowingText() {
+  const container = document.getElementById('japaneseTextFlow');
+  const warriorTexts = [
+    "侍 武士 刀 戦い 勇気 名誉 忠義 剣術 武道 修練 精神 覚悟 死生 流派 兵法 戦略 闘争 勝利 敗北 修羅",
+    "斬る 撃つ 守る 進む 退く 閃く 観る 攻める 耐える 鍛える 磨く 極める 悟る 超える 昇る 降る 燃える 凍る 砕く 貫く",
+    "月に叢雲 花に風 武士に二言なし 七転び八起き 石の上にも三年 虎穴に入らずんば虎子を得ず",
+    "生死一如 諸行無常 万法唯識 色即是空 空即是色 因果応報 自業自得",
+    "一撃必殺 千両役者 百花繚乱 電光石火 風林火山 疾風迅雷 獅子奮迅"
+  ];
   
-  for (let i = 0; i < 100; i++) {
-    const digit = document.createElement('div');
-    digit.className = 'binary-digit';
-    digit.textContent = Math.random() > 0.5 ? '1' : '0';
+  for (let i = 0; i < 20; i++) {
+    const text = document.createElement('div');
+    text.className = 'flowing-text';
+    text.textContent = warriorTexts[Math.floor(Math.random() * warriorTexts.length)];
     
     // Random properties
-    const size = Math.random() * 14 + 10;
-    const posX = Math.random() * window.innerWidth;
-    const duration = Math.random() * 5 + 5;
-    const delay = Math.random() * 5;
+    const size = Math.random() * 0.8 + 1.2;
+    const posY = Math.random() * window.innerHeight;
+    const duration = Math.random() * 80 + 120;
+    const delay = Math.random() * 60;
+    const opacity = Math.random() * 0.1 + 0.05;
     
-    digit.style.fontSize = `${size}px`;
-    digit.style.left = `${posX}px`;
-    digit.style.animationDuration = `${duration}s`;
-    digit.style.animationDelay = `${delay}s`;
+    text.style.fontSize = `${size}rem`;
+    text.style.top = `${posY}px`;
+    text.style.animationDuration = `${duration}s`;
+    text.style.animationDelay = `-${delay}s`;
+    text.style.opacity = opacity;
     
-    binaryContainer.appendChild(digit);
+    container.appendChild(text);
   }
 }
 
-// Create cyber rain effect
-function createCyberRain() {
-  const rainContainer = document.getElementById('cyberRain');
-  rainContainer.innerHTML = '';
+// Create blood drops
+function createBloodDrops() {
+  const dropsContainer = document.getElementById('bloodDrops');
+  dropsContainer.innerHTML = '';
   
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 25; i++) {
     const drop = document.createElement('div');
-    drop.className = 'cyber-drop';
+    drop.className = 'blood-drop';
     
     // Random properties
-    const length = Math.random() * 50 + 20;
+    const size = Math.random() * 30 + 15;
     const posX = Math.random() * window.innerWidth;
-    const duration = Math.random() * 1 + 0.5;
-    const delay = Math.random() * 2;
+    const posY = Math.random() * window.innerHeight;
+    const duration = Math.random() * 20 + 15;
+    const delay = Math.random() * 10;
     
-    drop.style.height = `${length}px`;
+    drop.style.width = `${size}px`;
+    drop.style.height = `${size}px`;
     drop.style.left = `${posX}px`;
+    drop.style.top = `${posY}px`;
     drop.style.animationDuration = `${duration}s`;
     drop.style.animationDelay = `${delay}s`;
     
-    rainContainer.appendChild(drop);
+    // Random rotation
+    drop.style.transform = `rotate(${Math.random() * 360}deg)`;
+    
+    dropsContainer.appendChild(drop);
   }
 }
 
-// Create floating hexagons
-function createFloatingHexagons() {
-  const hexagonContainer = document.getElementById('hexagonContainer');
-  hexagonContainer.innerHTML = '';
-  
-  for (let i = 0; i < 20; i++) {
-    const hexagon = document.createElement('div');
-    hexagon.className = 'hexagon';
-    
-    // Random properties
-    const size = Math.random() * 30 + 20;
-    const posX = Math.random() * window.innerWidth;
-    const posY = Math.random() * window.innerHeight + window.innerHeight;
-    const duration = Math.random() * 15 + 10;
-    const delay = Math.random() * 5;
-    const opacity = Math.random() * 0.2 + 0.1;
-    
-    hexagon.style.width = `${size}px`;
-    hexagon.style.height = `${size}px`;
-    hexagon.style.left = `${posX}px`;
-    hexagon.style.top = `${posY}px`;
-    hexagon.style.animationDuration = `${duration}s`;
-    hexagon.style.animationDelay = `${delay}s`;
-    hexagon.style.opacity = opacity;
-    
-    hexagonContainer.appendChild(hexagon);
-  }
-}
-
-// Create sparkle effect
-function createSparkleEffect(x, y) {
-  const sparkle = document.createElement('div');
-  sparkle.style.position = 'absolute';
-  sparkle.style.left = `${x - 15}px`;
-  sparkle.style.top = `${y - 15}px`;
-  sparkle.style.width = '30px';
-  sparkle.style.height = '30px';
-  sparkle.style.background = `radial-gradient(circle, var(--primary-color) 0%, transparent 70%)`;
-  sparkle.style.borderRadius = '50%';
-  sparkle.style.pointerEvents = 'none';
-  sparkle.style.opacity = '0.8';
-  sparkle.style.transition = 'all 0.8s ease-out';
-  sparkle.style.zIndex = '9997';
-  document.body.appendChild(sparkle);
+// ========== INTERACTION EFFECTS ==========
+// Create blood slash effect
+function createBloodSlash(x, y) {
+  const slash = document.createElement('div');
+  slash.style.position = 'absolute';
+  slash.style.left = `${x - 60}px`;
+  slash.style.top = `${y - 60}px`;
+  slash.style.width = '120px';
+  slash.style.height = '120px';
+  slash.style.background = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><path fill="%23ff0000" d="M10,10 L110,110 M110,10 L10,110" stroke="%23ff0000" stroke-width="6"/></svg>') no-repeat center center/contain`;
+  slash.style.pointerEvents = 'none';
+  slash.style.opacity = '0.9';
+  slash.style.transition = 'all 0.8s ease-out';
+  slash.style.zIndex = '9997';
+  slash.style.filter = 'drop-shadow(0 0 8px #ff0000)';
+  document.body.appendChild(slash);
   
   setTimeout(() => {
-    sparkle.style.transform = 'scale(3)';
-    sparkle.style.opacity = '0';
+    slash.style.transform = 'scale(1.8)';
+    slash.style.opacity = '0';
   }, 10);
   
-  setTimeout(() => document.body.removeChild(sparkle), 800);
+  setTimeout(() => document.body.removeChild(slash), 800);
   
-  // Create smaller sparkles
-  for (let i = 0; i < 8; i++) {
+  // Create smaller blood particles
+  for (let i = 0; i < 12; i++) {
     setTimeout(() => {
-      createSparkleParticle(x, y);
-    }, i * 50);
+      createBloodParticle(x, y);
+    }, i * 40);
   }
 }
 
-function createSparkleParticle(x, y) {
+function createBloodParticle(x, y) {
   const particle = document.createElement('div');
   particle.style.position = 'absolute';
-  particle.style.left = `${x - 2}px`;
-  particle.style.top = `${y - 2}px`;
-  particle.style.width = '4px';
-  particle.style.height = '4px';
-  particle.style.borderRadius = '50%';
+  particle.style.left = `${x - 3}px`;
+  particle.style.top = `${y - 3}px`;
+  particle.style.width = '6px';
+  particle.style.height = '6px';
   particle.style.background = 'var(--primary-color)';
   particle.style.pointerEvents = 'none';
   particle.style.opacity = '1';
   particle.style.zIndex = '9997';
+  particle.style.borderRadius = '50%';
+  particle.style.filter = 'blur(1px)';
   document.body.appendChild(particle);
   
   const angle = Math.random() * Math.PI * 2;
-  const distance = Math.random() * 50 + 30;
-  const duration = Math.random() * 0.5 + 0.3;
+  const distance = Math.random() * 60 + 40;
+  const duration = Math.random() * 0.6 + 0.4;
   
   const animation = particle.animate([
     { transform: `translate(0, 0)`, opacity: 1 },
@@ -1036,19 +1057,19 @@ function createSparkleParticle(x, y) {
   };
 }
 
-// Click/touch handler with sparkle effect
+// Click/touch handler with blood slash effect
 function handleInteraction(e) {
   const x = e.pageX || (e.touches && e.touches[0].pageX) || 0;
   const y = e.pageY || (e.touches && e.touches[0].pageY) || 0;
-  createSparkleEffect(x, y);
+  createBloodSlash(x, y);
   
   // Create a temporary effect on the cursor
   if (!isTouchDevice) {
-    cursor.style.transform = 'scale(1.5)';
-    cursor.style.boxShadow = `0 0 20px var(--accent-color)`;
+    cursor.style.transform = 'scale(1.8) rotate(45deg)';
+    cursor.style.filter = 'drop-shadow(0 0 15px white) brightness(2)';
     setTimeout(() => {
-      cursor.style.transform = 'scale(1)';
-      cursor.style.boxShadow = 'none';
+      cursor.style.transform = 'scale(1) rotate(0deg)';
+      cursor.style.filter = 'drop-shadow(0 0 8px var(--primary-color)) brightness(1.5)';
     }, 300);
   }
 }
@@ -1056,7 +1077,7 @@ function handleInteraction(e) {
 document.addEventListener('click', handleInteraction);
 document.addEventListener('touchstart', handleInteraction);
 
-// FPS counter with cyber style
+// ========== PERFORMANCE MONITOR ==========
 let lastFrame = performance.now();
 let frameCount = 0;
 let fpsCounter = document.getElementById('fpsCounter');
@@ -1078,7 +1099,7 @@ function updateFPS() {
     
     fpsCounter.textContent = `FPS: ${fps} | AVG: ${avgFps}`;
     fpsCounter.style.color = fps >= 50 ? 
-      getComputedStyle(document.documentElement).getPropertyValue('--accent-color') : 
+      getComputedStyle(document.documentElement).getPropertyValue('--secondary-color') : 
       fps >= 30 ? 
       getComputedStyle(document.documentElement).getPropertyValue('--primary-color') : 
       '#ff0000';
@@ -1091,8 +1112,9 @@ function updateFPS() {
 }
 updateFPS();
 
-// Music player functionality with cyber style
+// ========== MUSIC PLAYER ==========
 const bgMusic = document.getElementById('bgMusic');
+const battleMusic = document.getElementById('battleMusic');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const muteBtn = document.getElementById('muteBtn');
 const volumeSlider = document.getElementById('volumeSlider');
@@ -1101,24 +1123,27 @@ const musicTitle = document.getElementById('musicTitle');
 
 // Set initial volume
 bgMusic.volume = volumeSlider.value;
+battleMusic.volume = volumeSlider.value;
 
 // Play/Pause button
 playPauseBtn.addEventListener('click', () => {
-  if (bgMusic.paused) {
-    bgMusic.play()
+  const currentMusic = battleModeActive ? battleMusic : bgMusic;
+  
+  if (currentMusic.paused) {
+    currentMusic.play()
       .then(() => {
         playPauseBtn.textContent = '❚❚';
-        musicTitle.textContent = 'BGM: SYSTEM ACTIVE';
-        musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--accent-color');
+        musicTitle.textContent = battleModeActive ? 'BGM: BATTLE MODE' : 'BGM: Playing';
+        musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
       })
       .catch(e => {
         console.log('Autoplay prevented, please interact to play');
-        musicTitle.textContent = 'BGM: TAP TO ACTIVATE';
+        musicTitle.textContent = 'BGM: Tap to play';
       });
   } else {
-    bgMusic.pause();
+    currentMusic.pause();
     playPauseBtn.textContent = '▶';
-    musicTitle.textContent = 'BGM: SYSTEM STANDBY';
+    musicTitle.textContent = 'BGM: Standby';
     musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
   }
 });
@@ -1126,148 +1151,189 @@ playPauseBtn.addEventListener('click', () => {
 // Mute button
 muteBtn.addEventListener('click', () => {
   bgMusic.muted = !bgMusic.muted;
+  battleMusic.muted = bgMusic.muted;
   muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
   musicTitle.textContent = bgMusic.muted ? 
-    'BGM: SYSTEM MUTED' : 
-    bgMusic.paused ? 
-    'BGM: SYSTEM STANDBY' : 
-    'BGM: SYSTEM ACTIVE';
+    'BGM: Muted' : 
+    (bgMusic.paused && battleMusic.paused) ? 
+    'BGM: Standby' : 
+    (battleModeActive ? 'BGM: BATTLE MODE' : 'BGM: Playing');
 });
 
 // Volume slider
 volumeSlider.addEventListener('input', () => {
-  bgMusic.volume = volumeSlider.value;
+  const volume = volumeSlider.value;
+  bgMusic.volume = volume;
+  battleMusic.volume = volume;
   bgMusic.muted = false;
+  battleMusic.muted = false;
   muteBtn.textContent = '🔊';
   
   // Visual feedback
   volumeSlider.style.background = `linear-gradient(to right, 
     ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} 0%, 
-    ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} ${volumeSlider.value * 100}%, 
-    rgba(0, 255, 157, 0.3) ${volumeSlider.value * 100}%, 
-    rgba(0, 255, 157, 0.3) 100%)`;
+    ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} ${volume * 100}%, 
+    rgba(255, 0, 0, 0.3) ${volume * 100}%, 
+    rgba(255, 0, 0, 0.3) 100%)`;
 });
 
-// Custom cursor for interactive elements
+// ========== INTERACTIVE ELEMENTS ==========
 const interactiveElements = document.querySelectorAll('a, button, input, .music-btn, .social-icons a');
 interactiveElements.forEach(el => {
   el.addEventListener('mouseenter', () => {
     if (!isTouchDevice) {
-      cursor.style.transform = 'scale(1.5)';
-      cursor.style.background = `radial-gradient(circle, ${getComputedStyle(document.documentElement).getPropertyValue('--accent-color')} 0%, transparent 70%)`;
-      cursor.style.borderColor = 'white';
+      cursor.style.transform = 'scale(1.8) rotate(45deg)';
+      cursor.style.filter = 'drop-shadow(0 0 15px var(--secondary-color)) brightness(2)';
+      
+      // Show cursor trail if not touch device
+      cursorTrail.forEach(trail => trail.element.style.display = 'block');
     }
   });
   
   el.addEventListener('mouseleave', () => {
     if (!isTouchDevice) {
-      cursor.style.transform = 'scale(1)';
-      cursor.style.background = `radial-gradient(circle, ${getComputedStyle(document.documentElement).getPropertyValue('--primary-color')} 0%, transparent 70%)`;
-      cursor.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+      cursor.style.transform = 'scale(1) rotate(0deg)';
+      cursor.style.filter = 'drop-shadow(0 0 8px var(--primary-color)) brightness(1.5)';
     }
   });
 });
 
-// Sparkle effect variables
-let sparkleActive = false;
-const sparkleContainer = document.getElementById('sparkleContainer');
-const sparkleBtn = document.getElementById('sparkleBtn');
-const sparkleChars = "01";
-let sparkleColumns = [];
-let sparkleAnimationId = null;
+// ========== BATTLE MODE ==========
+let battleModeActive = false;
+const battleModeBtn = document.getElementById('battleModeBtn');
+const terminalText = document.getElementById('terminalText');
+const battleModeEffects = document.getElementById('battleModeEffects');
 
-// Create sparkle columns
-function createSparkleColumns() {
-  sparkleContainer.innerHTML = '';
-  sparkleColumns = [];
+// Typewriter effect for terminal text
+function typeTerminalText(text, speed = 40) {
+  terminalText.innerHTML = '';
+  const lines = text.split('<br>');
+  let lineIndex = 0;
+  let charIndex = 0;
   
-  const columnCount = Math.floor(window.innerWidth / 30);
+  function type() {
+    if (lineIndex < lines.length) {
+      if (charIndex < lines[lineIndex].length) {
+        const char = document.createTextNode(lines[lineIndex][charIndex]);
+        const span = document.createElement('span');
+        span.appendChild(char);
+        terminalText.appendChild(span);
+        
+        // Animate the new character
+        span.style.animation = `fadeIn 0.1s forwards`;
+        span.style.animationDelay = `${charIndex * 0.02}s`;
+        
+        charIndex++;
+        setTimeout(type, speed);
+      } else {
+        // Move to next line
+        terminalText.appendChild(document.createElement('br'));
+        lineIndex++;
+        charIndex = 0;
+        setTimeout(type, speed * 2);
+      }
+    }
+  }
   
-  for (let i = 0; i < columnCount; i++) {
-    const column = document.createElement('div');
-    column.className = 'sparkle-column';
-    column.style.left = `${i * 30}px`;
-    column.style.fontSize = `${Math.random() * 10 + 12}px`;
-    column.style.animationDuration = `${Math.random() * 2 + 2}s`;
-    sparkleContainer.appendChild(column);
+  type();
+}
+
+function toggleBattleMode() {
+  battleModeActive = !battleModeActive;
+  
+  if (battleModeActive) {
+    // Activate battle mode
+    battleModeBtn.classList.add('active');
+    battleModeBtn.textContent = '⚔ BATTLE ENGAGED ⚔';
+    document.body.style.background = `linear-gradient(to bottom, #400000 0%, #180000 100%)`;
+    document.querySelector('.blood-overlay').style.opacity = '0.6';
+    battleModeEffects.classList.add('active');
     
-    sparkleColumns.push({
-      element: column,
-      chars: [],
-      speed: Math.random() * 2 + 1,
-      length: Math.floor(Math.random() * 15) + 10,
-      nextCharTime: 0
+    // Change terminal text
+    typeTerminalText(
+      "> BATTLE MODE ACTIVATED<br>" +
+      "> COMBAT SYSTEMS ONLINE<br>" +
+      "> ADRENALINE INJECTION COMPLETE<br>" +
+      "> LETHAL FORCE AUTHORIZED<br>" +
+      "> 殺戮モード起動", 
+      30
+    );
+    
+    // Switch to battle music
+    bgMusic.pause();
+    battleMusic.currentTime = 0;
+    battleMusic.play().catch(e => console.log('Autoplay prevented'));
+    playPauseBtn.textContent = '❚❚';
+    musicTitle.textContent = 'BGM: BATTLE MODE';
+    musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+    
+    // Intensify blood drops
+    const bloodDrops = document.querySelectorAll('.blood-drop');
+    bloodDrops.forEach(drop => {
+      drop.style.animationDuration = `${Math.random() * 5 + 5}s`;
+      drop.style.filter = 'drop-shadow(0 0 5px var(--primary-color)) brightness(1.5)';
+    });
+    
+    // Add more blood drops
+    for (let i = 0; i < 15; i++) {
+      setTimeout(() => {
+        const drop = document.createElement('div');
+        drop.className = 'blood-drop';
+        drop.style.width = `${Math.random() * 40 + 20}px`;
+        drop.style.height = drop.style.width;
+        drop.style.left = `${Math.random() * window.innerWidth}px`;
+        drop.style.top = `${Math.random() * window.innerHeight}px`;
+        drop.style.animationDuration = `${Math.random() * 8 + 6}s`;
+        drop.style.animationDelay = `${Math.random() * 5}s`;
+        drop.style.transform = `rotate(${Math.random() * 360}deg)`;
+        drop.style.filter = 'drop-shadow(0 0 5px var(--primary-color)) brightness(1.5)';
+        document.getElementById('bloodDrops').appendChild(drop);
+      }, i * 200);
+    }
+  } else {
+    // Deactivate battle mode
+    battleModeBtn.classList.remove('active');
+    battleModeBtn.textContent = '⚔ ENGAGE BATTLE MODE ⚔';
+    document.body.style.background = `linear-gradient(to bottom, var(--darker-bg) 0%, var(--dark-bg) 100%)`;
+    document.querySelector('.blood-overlay').style.opacity = '0.4';
+    battleModeEffects.classList.remove('active');
+    
+    // Change terminal text
+    typeTerminalText(
+      "> Combat systems standby<br>" +
+      "> Adrenaline levels normalized<br>" +
+      "> Warrior status: vigilant<br>" +
+      "> Ready for commands", 
+      40
+    );
+    
+    // Switch back to normal music
+    battleMusic.pause();
+    bgMusic.currentTime = 0;
+    bgMusic.play().catch(e => console.log('Autoplay prevented'));
+    playPauseBtn.textContent = '❚❚';
+    musicTitle.textContent = 'BGM: Playing';
+    musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+    
+    // Reset blood drops
+    const bloodDrops = document.querySelectorAll('.blood-drop');
+    bloodDrops.forEach(drop => {
+      drop.style.animationDuration = `${Math.random() * 15 + 10}s`;
+      drop.style.filter = 'drop-shadow(0 0 3px var(--primary-color))';
     });
   }
 }
 
-// Update sparkle animation
-function updateSparkle(timestamp) {
-  if (!sparkleActive) return;
-  
-  sparkleColumns.forEach(column => {
-    if (timestamp > column.nextCharTime) {
-      // Add new character
-      const newChar = {
-        char: sparkleChars[Math.floor(Math.random() * sparkleChars.length)],
-        opacity: 1,
-        y: 0
-      };
-      column.chars.unshift(newChar);
-      
-      // Remove old characters
-      if (column.chars.length > column.length) {
-        column.chars.pop();
-      }
-      
-      // Update character positions and opacities
-      let columnText = '';
-      column.chars.forEach((char, index) => {
-        char.y += column.speed;
-        char.opacity = index / column.chars.length;
-        columnText += `<span style="opacity:${char.opacity}; color:${index % 2 === 0 ? 'var(--primary-color)' : 'var(--accent-color)'}">${char.char}</span>`;
-      });
-      
-      column.element.innerHTML = columnText;
-      column.nextCharTime = timestamp + 100;
-    }
-  });
-  
-  sparkleAnimationId = requestAnimationFrame(updateSparkle);
-}
-
-// Toggle sparkle effect
-function toggleSparkle() {
-  sparkleActive = !sparkleActive;
-  
-  if (sparkleActive) {
-    sparkleContainer.classList.add('active');
-    createSparkleColumns();
-    sparkleAnimationId = requestAnimationFrame(updateSparkle);
-    sparkleBtn.classList.add('active');
-    sparkleBtn.textContent = 'NEON MODE ACTIVE';
-  } else {
-    sparkleContainer.classList.remove('active');
-    if (sparkleAnimationId) {
-      cancelAnimationFrame(sparkleAnimationId);
-    }
-    sparkleBtn.classList.remove('active');
-    sparkleBtn.textContent = 'ACTIVATE NEON MODE';
-  }
-}
-
-// Start experience function with cyber effects
+// ========== START EXPERIENCE ==========
 function startExperience() {
-  // Add sparkle effect to start screen
   const startScreen = document.getElementById('startScreen');
   startScreen.style.animation = 'none';
   void startScreen.offsetWidth; // Trigger reflow
-  startScreen.style.animation = 'fadeIn 0.25s ease';
+  startScreen.style.animation = 'fadeIn 0.5s ease';
   
-  // Create binary code and rain
-  createBinaryCode();
-  createCyberRain();
-  createFloatingHexagons();
+  // Create effects
+  createFlowingText();
+  createBloodDrops();
   
   // Add transition effect
   setTimeout(() => {
@@ -1281,11 +1347,20 @@ function startExperience() {
       // Start music automatically
       bgMusic.play().catch(e => {
         console.log('Autoplay prevented, please interact to play');
-        musicTitle.textContent = 'BGM: TAP TO ACTIVATE';
+        musicTitle.textContent = 'BGM: Tap to play';
       });
       playPauseBtn.textContent = '❚❚';
-      musicTitle.textContent = 'BGM: SYSTEM ACTIVE';
-      musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--accent-color');
+      musicTitle.textContent = 'BGM: Playing';
+      musicTitle.style.color = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+      
+      // Type terminal text
+      typeTerminalText(
+        "> System initialization complete<br>" +
+        "> Warrior spirit detected<br>" +
+        "> Battle readiness: 100%<br>" +
+        "> Honor code: active<br>" +
+        "> Mission: undefined"
+      );
       
       mainCard.focus();
       
@@ -1294,26 +1369,22 @@ function startExperience() {
         cursorTrail.forEach(trail => trail.element.style.display = 'block');
       }
     }, 500);
-  }, 250);
+  }, 300);
 }
 
-// Sparkle button event listener
-sparkleBtn.addEventListener('click', toggleSparkle);
+// ========== EVENT LISTENERS ==========
+battleModeBtn.addEventListener('click', toggleBattleMode);
 
-// Start event listeners
 window.addEventListener('keydown', e => {
   if(e.key === 'Enter') startExperience();
 });
 
-// Use click for mouse and touch for touch devices
 window.addEventListener(isTouchDevice ? 'touchstart' : 'click', startExperience, { once: true });
 
-// Prevent zooming on mobile
 document.addEventListener('gesturestart', function(e) {
   e.preventDefault();
 });
 
-// Prevent double-tap zoom
 let lastTouchEnd = 0;
 document.addEventListener('touchend', function(event) {
   const now = (new Date()).getTime();
@@ -1323,19 +1394,14 @@ document.addEventListener('touchend', function(event) {
   lastTouchEnd = now;
 }, false);
 
-// Window resize handler
 window.addEventListener('resize', () => {
-  createBinaryCode();
-  createCyberRain();
-  createFloatingHexagons();
-  if (sparkleActive) {
-    createSparkleColumns();
-  }
+  createFlowingText();
+  createBloodDrops();
 });
 
-// Initialize with effects even before start
-createBinaryCode();
-createFloatingHexagons();
+// ========== INITIALIZE ==========
+createFlowingText();
+createBloodDrops();
 </script>
 
 </body>
